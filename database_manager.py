@@ -47,7 +47,7 @@ class DatabaseManager:
         try:
             file = None
             # IMEI_LUT.dat is a more comprehensive source, which compiles WMO's
-            # from wmogts15.dat, ghrsst buoys, SIO files, etc. 
+            # from IMEI_LUT_DAT.dat, ghrsst buoys, SIO files, etc. 
             with open(constants.IMEI_LUT_DAT, "r") as file:
                 for line in file:
                     # split() without arguments automatically handles any consecutive whitespace

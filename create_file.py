@@ -52,7 +52,7 @@ def create_new_records_for_directory_file(input_file, directory_file):
             print("Entered records:")
 
             # The loop reads a list of modified buoy information out of a raw data text file row by row.
-            # For every buoy row found, it looks up where that buoy exists inside the wmogts15.dat file,
+            # For every buoy row found, it looks up where that buoy exists inside the IMEI_LUT_DAT.dat file,
             # craete a new record in the DIR-File, and writes a verification tracking statement out to the terminal.
             for line in lines:
                 # split() without arguments automatically handles any consecutive whitespace
@@ -78,7 +78,7 @@ def create_new_records_for_directory_file(input_file, directory_file):
                         
                         # Looks for the ID in the DIR-File.
                         idx = common.get_id_position_in_dirfl(buoy_id, directory_file)
-                        if (idx < 0 ):
+                        if (idx >= 0 ):
                             # Buoy ID was found in DIR-File
                             print(f"{' ' * 4}{'Entry for '}{str(int(buoy_id))}{' already exists in DIR-File. Skip to the nex ID.'}")
                         else:
@@ -161,7 +161,7 @@ def add_new_record():
         # Update the directory file
         for i in range(len(new_records)):
             directory_file.append(new_records[i])
-        print(*directory_file, sep ='\n')
+        #print(*directory_file, sep ='\n')
         dirfl.wdirfl50(directory_file)
         added_records = len(new_records)
         print('\n')

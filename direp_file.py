@@ -5,13 +5,17 @@
 
 # Programer: CG July 2026
 
+from create_file import add_new_record
 from update_drogue_file import update_drogue_off_date
 from update_dead_file import update_dead_info
-from create_file import add_new_record
+from update_start_file import update_start_info
+from update_wmo_file import update_wmo
+
 from helper import Menu
 
 def return_function(choice):
     if (choice == 1):
+        # This routine is used to add a new record to the directory file.
         add_new_record()
     elif (choice == 2):
         # This routine is used to change the status of the drogue in the directory file.
@@ -20,7 +24,13 @@ def return_function(choice):
         # This function is used to change the status of a buoy to dead in directory file.
         update_dead_info()
     elif (choice == 4):
-        print('\n' + f"{' ' * 9}{'*** To do ***'}")
+        # This routine is used to change the start time, lat, lon of 
+        # an existing record in directory file.
+        update_start_info()
+    elif (choice == 5):
+        # This routine is used to change the start time, lat, lon of 
+        # an existing record in directory file.
+        update_wmo()
     elif (choice < 0):
         print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")
     else:
@@ -35,7 +45,8 @@ def main_menu():
         "1. ": "to  create  new record",
         "2. ": "to update drogue information",
         "3. ": "to change buoys to dead status",
-        "4. ": "to change start time, lat, lon (under construction - Ibis)"
+        "4. ": "to change start time, lat, lon",
+        "5. ": "to change WMO numbers"
     }
     last_option_description = "Exit"
 
