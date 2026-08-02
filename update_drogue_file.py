@@ -54,45 +54,53 @@ def update_drogue_off_date_in_directory_file(input_file):
                             old_row = directory_file[idx].copy()
                             row = old_row.copy()
 
+                            # The 5th column in DIR-File represents the deployment date.
+                            dirfl_start_time = row[4]
+                            # The 8th column in DIR-File represents the date of last fix.
+                            dirfl_end_time = row[7]
+                            
                             # If the given drogue_off_date = 99999 or 0 will make 
                             # drogue_off_date = end_time found in DIR-File.
                             if (int(drogue_off_date) == 99999 or int(drogue_off_date) == 0):
-                                # The 8th column in DIR-File represents the date of last fix.
-                                value = row[7]
+                                value = dirfl_end_time
                             # If the given drogue_off_date = 1 will make 
                             # drogue_off_date = start_time found in DIR-File.
                             elif (int(drogue_off_date) == 1):
-                                # The 5th column in DIR-File represents the deployment date.
-                                value = row[4]
+                                value = dirfl_start_time
                             # If the given drogue_off_date = -1 could not be determined then it will make 
                             # drogue_off_date = 1-1-1979.
                             elif (int(drogue_off_date) == -1):
                                 value = 1.0 # (Julian day 1)
                             else:
                                 # Make sure the given drogue-off date is not after end_time in DIR-File.
-                                if (drogue_off_date > row[7]):
-                                    value = row[7]
+                                if (dirfl_end_time != 0 and drogue_off_date > dirfl_end_time):
+                                    value = dirfl_end_time
                                 else:
                                     # Otherwise, it accepts the given drogue-off date.
                                     value = drogue_off_date
 
-                            # The 15th column in DIR-File represents the drogue-off date.
                             # If the drogue-off date in DIR-File is less than or equal to 0,
                             # it indicates that the drogue was not lost.
+
+                            # The 15th column in DIR-File represents the drogue-off date.
                             row[14] = value
                             # The drogue-off date was changed?
                             if (old_row[14] != row[14]):
-                                # Replace with new values.
-                                new_directory_file[idx] = row
+                                error_message = common.validate_dirfl_record(row)
+                                if (error_message == None):
+                                    # Replace with new values.
+                                    new_directory_file[idx] = row
 
-                                # Prints out a log of the buoy's parameters before any changes are applied.
-                                print(f"{' ' * 4}" + f"{int(row[0])}")
-                                print(f"{' ' * 6}" + "Old: drogue_off_date = " + f"{old_row[14]}" + 
-                                    " start_time = " + f"{old_row[4]}" + " end_time = "+ f"{old_row[7]}")
-                                # Logs the modified data to the console.
-                                print(f"{' ' * 6}" + "New: drogue_off_date = " + f"{row[14]}" + 
-                                    " start_time = " + f"{row[4]}" + " end_time = "+ f"{row[7]}")
-                                print(' ')
+                                    # Prints out a log of the buoy's parameters before any changes are applied.
+                                    print(f"{' ' * 4}" + f"{int(row[0])}")
+                                    print(f"{' ' * 6}" + "Old: drogue_off_date = " + f"{old_row[14]}" + 
+                                        " start_time = " + f"{old_row[4]}" + " end_time = "+ f"{old_row[7]}")
+                                    # Logs the modified data to the console.
+                                    print(f"{' ' * 6}" + "New: drogue_off_date = " + f"{row[14]}" + 
+                                        " start_time = " + f"{row[4]}" + " end_time = "+ f"{row[7]}")
+                                    print(' ')
+                                else:
+                                    print("Error: Check " + f"{int(row[0])}" + " " + error_message)
                         else:
                             print(buoy_id + ": no match found in DIR-File.")
                     else:

@@ -78,25 +78,29 @@ def update_dead_info_in_directory_file(input_file):
                                 old_row[8] != row[8] or     # death_latitude
                                 old_row[9] != row[9] or     # death_longitude
                                 old_row[21] != row[21]):    # death_code
-                                # Replace with new values.
-                                new_directory_file[idx] = row
+                                error_message = common.validate_dirfl_record(row)
+                                if (error_message == None):
+                                    # Replace with new values.
+                                    new_directory_file[idx] = row
 
-                                # Prints out a log of the buoy's parameters before any changes are applied.
-                                message = '{:>19}'.format(str(int(row[0])))                 # buoy_id
-                                message = message + '{:>13}'.format(f"{old_row[7]:.3f}")    # death_time
-                                message = message + '{:>9}'.format(f"{old_row[8]:.3f}")     # death_latitude
-                                message = message + '{:>9}'.format(f"{old_row[9]:.3f}")     # death_longitude
-                                message = message + '{:>9}'.format(int(old_row[21]))        # death_code
-                                print(message)
-                                # Logs the modified data to the console.
-                                message = '{:>32}'.format(f"{row[7]:.3f}")                  # death_time
-                                message = message + '{:>9}'.format(f"{row[8]:.3f}")         # death_latitude
-                                message = message + '{:>9}'.format(f"{row[9]:.3f}")         # death_longitude
-                                message = message + '{:>9}'.format(int(row[21]))            # death_code
-                                print(message)
-                                print(' ')
+                                    # Prints out a log of the buoy's parameters before any changes are applied.
+                                    message = '{:>19}'.format(str(int(row[0])))                 # buoy_id
+                                    message = message + '{:>13}'.format(f"{old_row[7]:.3f}")    # death_time
+                                    message = message + '{:>9}'.format(f"{old_row[8]:.3f}")     # death_latitude
+                                    message = message + '{:>9}'.format(f"{old_row[9]:.3f}")     # death_longitude
+                                    message = message + '{:>9}'.format(int(old_row[21]))        # death_code
+                                    print(message)
+                                    # Logs the modified data to the console.
+                                    message = '{:>32}'.format(f"{row[7]:.3f}")                  # death_time
+                                    message = message + '{:>9}'.format(f"{row[8]:.3f}")         # death_latitude
+                                    message = message + '{:>9}'.format(f"{row[9]:.3f}")         # death_longitude
+                                    message = message + '{:>9}'.format(int(row[21]))            # death_code
+                                    print(message)
+                                    print(' ')
+                                else:
+                                    print("Error: Check " + f"{int(row[0])}" + " " + error_message)
                         else:
-                            print(buoy_id + ": no match found in DIR-File.")
+                            print(str(buoy_id) + ": no match found in DIR-File.")
                     else:
                         print("Error: Check " + f"{input_file_path}" + " format")
                         break

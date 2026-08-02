@@ -71,6 +71,26 @@ class CommonFunctions:
 
         return pos
     
+    def validate_dirfl_record(self, record):
+        result = None
+        
+        start_time = record[4]          # The 5th column in DIR-File represents the deployment date.
+        end_time = record[7]            # The 8th column in DIR-File represents the date of last fix.
+        drogue_off_date = record[14]    # The 15th column in DIR-File represents the drogue-off date.
+
+        # Make sure the drogue-off date is not after end_time in DIR-File.
+        if (end_time > 0.0 and drogue_off_date > end_time):
+            result = "drogue-off date is after end_time in DIR-File."
+        # Make sure the drogue-off date is not before start_time in DIR-File.
+        elif (drogue_off_date > 1.0 and drogue_off_date < start_time):
+            result = "drogue-off date is before start_time in DIR-File."
+        else:
+            # Make sure the start_time is not after end_time in DIR-File.
+            if (end_time > 0.0 and start_time > end_time):
+                result = "start_time is after end_time in DIR-File."
+                                
+        return result
+    
     # This function compares two 2D float arrays
     # Pramater:
     #    list1 - 2D float array

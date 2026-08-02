@@ -33,17 +33,14 @@ def fill_sensor_type_array(buoy_type):
 
 def create_new_records_for_directory_file(input_file, directory_file):
 #    print(*input_file, sep ='\n')
-    result = None
-    
-    # Makes a copy of DIR-File.
     new_records = []
     
     print("Wait!: Entering new records on directory file..." + '\n')
 
     file = None
+    common = CommonFunctions()
     file_manager = FileManager()
     input_file_path = file_manager._resolve_path(input_file)
-    common = CommonFunctions()
     try:
         # input_file format: buoy_id, buoy_type, project_number, start_time, start_latitude, start_longitude.
         with open(input_file_path, "r", encoding = "utf-8") as file:
@@ -114,8 +111,12 @@ def create_new_records_for_directory_file(input_file, directory_file):
                             new_record.append(zero) # death code (0 = still active/alive, initial value)
                             print(f"{' ' * 6}{new_record}")                           
 
-                            # Add record.
-                            new_records.append(new_record)                            
+                            error_message = common.validate_dirfl_record(new_record)
+                            if (error_message == None): # Record is valid
+                                # Add record.
+                                new_records.append(new_record) 
+                            else:
+                                print("Error: Check " + f"{int(new_record[0])}" + " " + error_message)                           
                     else:
                         print('\n')
                         print(f"{'Error: Check '}{input_file_path}{' format.'}")
@@ -130,10 +131,7 @@ def create_new_records_for_directory_file(input_file, directory_file):
         if file:
             file.close # Always executes, ensuring the stream is freed
 
-    if (len(new_records) > 0):
-        result = new_records
-
-    return result
+    return new_records
 
 # This routine is used to add a new record to the directory file,
 # while creating a timestamped backup copy beforehand.
@@ -166,8 +164,8 @@ def add_new_record():
         added_records = len(new_records)
         print('\n')
         print(f"{'Added records: '}{added_records}" + 
-              f"{' ' * 9}{' Original number of records: '}{len(directory_file)}" +
-              f"{' ' * 9}{' New number of records: '}{len(directory_file) + added_records}")
+              f"{' ' * 9}{' Original number of records: '}{len(directory_file) - added_records}" +
+              f"{' ' * 9}{' New number of records: '}{len(directory_file)}")
     else:
         print('\n')
         print(f"{' ' * 4}" + "No changes")

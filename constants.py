@@ -14,6 +14,7 @@ TPB_AB_COEF15_DAT   = DATA_DIR + "tpb_ab_coef15.dat"
 WMOGTS15_DAT        = DATA_DIR + "wmogts15.dat"
 WMOGTS15_OFF        = DATA_DIR + "wmogts15.off"
 IMEI_LUT_DAT        = NEW_DATA_DIR + "IMEI_LUT.dat"
+#TMPFL30_DAT         = DATA_DIR + "tmpfl30.dat"
 
 # Directory file
 #DIR_FILE            = DATA_DIR + "dirfl50.dat"
@@ -21,3 +22,4 @@ IMEI_LUT_DAT        = NEW_DATA_DIR + "IMEI_LUT.dat"
 MY_DATA_DIR = "/phodnet/drifter/gonzalez/programs/python/migration_for2py/data/files/"
 DIR_FILE = MY_DATA_DIR + "dirfl50.dat"
 BACKUP_DIR = MY_DATA_DIR + "save"
+TMPFL30_DAT = MY_DATA_DIR + "tmpfl30.dat"
