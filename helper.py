@@ -53,6 +53,40 @@ class Menu:
             print('\n' + f"{' ' * 9}{'Invalid input! Please enter a whole number.'}")
             return self.loop()
 
+# Child class derived from Menu.
+# This class keep looping while the user select a
+# previous set choice.
+class Loop_Menu(Menu):
+    def __init__(self, title, dictionary, last_option_description, choice, return_function = None):
+        # Call parent constructor to initialize the properties
+        super().__init__(title, dictionary, last_option_description, return_function) 
+        # Add a unique property for the child class
+        self.choice = choice 
+
+    # Overriding the parent's loop() method
+    def loop(self):
+        self.display()
+
+        try:
+            # The input() function always returns a string
+            last_option = str(len(self.dictionary) - 1)
+            choice = int(input('\n' + f"{' ' * 9}{'Enter your choice (0-'}{last_option}{'): '}"))
+            if (abs(choice) < 0 or abs(choice) > int(last_option)):
+                print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")
+                return self.loop()
+            else :
+                if callable(self.return_function(choice)):
+                    self.return_function(choice)
+                if (choice == 0 or choice == self.choice):
+                    pass
+                else:
+                    return self.loop()
+
+        except ValueError as e:
+            # Triggers if the user types letters, symbols, or floats instead of an integer
+            print('\n' + f"{' ' * 9}{'Invalid input! Please enter a whole number.'}")
+            return self.loop()
+
 
 
 

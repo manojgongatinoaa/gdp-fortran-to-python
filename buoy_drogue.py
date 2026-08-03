@@ -19,7 +19,7 @@ class BuoyDrogue:
     # Return:
     #     If buys with drogue on was selected return drogue_on
     #     otherwise return drogue_off
-    #     Result list format: buoy_id, program_number, buoy_type
+    #     Result list format: buoy_id, experiment_number, buoy_type
     def drogue(self, sel):
         drogue_on = []
         drogue_off = []
@@ -36,19 +36,19 @@ class BuoyDrogue:
             # it indicates that the drogue was not lost.
             drogue_off_date = row[14]
 
-            # Result list format: buoy_id, program_number, buoy_type
+            # Result list format: buoy_id, experiment_number, buoy_type
             buoy_id = int(row[0])
-            program_number = int(row[2])
+            experiment_number = int(row[2])
             buoy_type = int(row[3])
             end_date= row[7]
             
             if (sel > 0): # drogue on buoys selected
                 if (drogue_off_date <= 0): # drogue still active
-                    drogue_on.append([buoy_id, program_number, buoy_type])
+                    drogue_on.append([buoy_id, experiment_number, buoy_type])
             else: # drogue off selected
                 # If the drogue was lost and the end date is after your cutoff threshold gdt
                 if (drogue_off_date > 0 and end_date > self.gdt):
-                    drogue_off.append([buoy_id, program_number, buoy_type])
+                    drogue_off.append([buoy_id, experiment_number, buoy_type])
 
         if (sel > 0): # drogue on buoys selected
             return drogue_on

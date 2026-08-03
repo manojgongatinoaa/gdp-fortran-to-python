@@ -68,6 +68,8 @@ class DirectoryFile:
             if directory_file:
                 directory_file.close # Always executes, ensuring the stream is freed
 
+        # A 2D array.
+        # It holds the directory file buoys across 22 parameters.
         return dirfl
         
     # This function write drifter data into the binary (unformatted) direct-access file called dirfl50.dat,
@@ -78,9 +80,6 @@ class DirectoryFile:
         backup_file = common.create_timestamped_backup(DIR_FILE)
         if (backup_file):
             print('\n' + "DIR-File backup created:", backup_file, "with today's date/time.")
-            # Starts a loop that iterates through each individual data record in DIR-File
-
-        #print(*directory_file, sep ='\n')
         
         file = None
         # Flatten the 2D list into a 1D list

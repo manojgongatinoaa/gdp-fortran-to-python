@@ -1,12 +1,10 @@
 #!/usr/bin/python
 
 # Here's a simple Python menu using the 'input()' function to run various commands:
-# Each option create a list of ids, reading the DIR-File (dirfl)
 
 # Programer: CG July 2026
 
-import os
-from cridlist_option5 import option_5
+from cridlist_according_drogue_status import according_drogue_status
 from helper import Menu
 
 def option_1():
@@ -27,7 +25,7 @@ def option_4():
 
 def return_function(choice):
     if (abs(choice) == 5):
-        option_5(choice)
+        according_drogue_status(choice)
     elif (choice < 0):
         print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")       
     else:
@@ -36,7 +34,7 @@ def return_function(choice):
             print("Exit!")
     
 def cridlist_main_menu():
-    title = '\n' + f"{' ' * 9}{'M E N U (function crdlist)'}"  + '\n'
+    title = '\n' + f"{' ' * 9}{'M E N U (cridlist)'}"  + '\n'
     title = title + f"{' ' * 9}{'=========================='}"
     menu_dictionary = {
         "1. ": "Option 1",

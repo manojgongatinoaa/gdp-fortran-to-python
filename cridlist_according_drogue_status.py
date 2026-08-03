@@ -5,7 +5,6 @@
 # This run the option 5 from cridlist.py
 
 import os
-import constants
 
 from buoy_drogue import BuoyDrogue
 from directory_file import DirectoryFile
@@ -14,7 +13,7 @@ from database_manager import DatabaseManager
 
 # Parameters:
 # buoy_list -         The incoming data array containing buoy properties. 
-#                     First column is the ID, second column is the program, 
+#                     First column is the ID, second column is the experiment_number, 
 #                     and the third column is the buoy type.
 # output_files_path - A character string containing the root directory path
 #                     or for the output files.
@@ -82,12 +81,12 @@ def byman(buoy_list, output_files_path):
                 id_found = True
                 break
 
-        program = str(row[1])
+        experiment_number = str(row[1])
         buoy_type = str(row[2])
         if id_found == True:
             # Format: 1 starting space, a 15-character integer field, another space, 
             #         and three 9-character integer fields.
-            line = ['{:>16}'.format(str(buoy_id)), '{:>10}'.format(str(program)), '{:>9}'.format(str(buoy_type)), '{:>9}'.format(str(manufacturer))]
+            line = ['{:>16}'.format(str(buoy_id)), '{:>10}'.format(str(experiment_number)), '{:>9}'.format(str(buoy_type)), '{:>9}'.format(str(manufacturer))]
 
             if (manufacturer == '1'):
                 clearwater.append(line)
@@ -112,7 +111,7 @@ def byman(buoy_list, output_files_path):
                 unknown_code.append(line)
         else:
             # buoy_id not found in /phodnet/drifter/data/files/tpb_ab_coef15.dat
-            line = ['{:>16}'.format(str(buoy_id)), '{:>10}'.format(str(program)), '{:>9}'.format(str(buoy_type))]
+            line = ['{:>16}'.format(str(buoy_id)), '{:>10}'.format(str(experiment_number)), '{:>9}'.format(str(buoy_type))]
             unknown_manufacture.append(line)
     
     if (len(clearwater) > 0 or len(technocean) > 0 or len(metocean) > 0 or
@@ -205,7 +204,7 @@ def separate_by_manufacture(drogues_lis, sorted_buoy_list):
             # Triggers if the user types letters, symbols, or floats instead of an integer
             ('\n' + f"{' ' * 9}{'Invalid input! Please enter a whole number.'}")
 
-def option_5(choice):
+def according_drogue_status(choice):
     txt = ''
     if choice == 5:
         txt = "ON"
@@ -226,7 +225,7 @@ def option_5(choice):
     # Filters the buoys based on whether the drogue is ON or OFF
     gdt = 0.0 # all buoys anyways
     buoy_drogue = BuoyDrogue(directory_file, gdt)
-    buoy_list = buoy_drogue.drogue(choice) # Result list format: buoy_id, program_number, buoy_type
+    buoy_list = buoy_drogue.drogue(choice) # Result list format: buoy_id, experiment_number, buoy_type
     # Sorting by buoy ID in ascending order
     sorted_buoy_list= sorted(buoy_list, key = lambda x: x[0])
 

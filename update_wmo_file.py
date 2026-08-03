@@ -45,30 +45,34 @@ def update_wmo_in_directory_file(input_file):
                     if (len(columns) > 1):
                         buoy_id = int(columns[0])
                         wmo     = float(columns[1])
-                        
-                        # Looks for the ID in the DIR-File.
-                        idx = common.get_id_position_in_dirfl(buoy_id, directory_file)
-                        if (idx >= 0 ):
-                            # Buoy ID was found in DIR-File
-                            # Makes copies of DIR-File's row.
-                            old_row = directory_file[idx].copy()
-                            row = old_row.copy()
 
-                            # The 2nd column in DIR-File represents the WMO number.
-                            row[1] = wmo
-                            # The WMO number was changed?
-                            if (old_row[1] != row[1]):
-                                # Replace with new values.
-                                new_directory_file[idx] = row
+                        dirfl_wmo_column = 1 # (0-indexed)
+                        if (common.value_exits_2D(wmo, dirfl_wmo_column, directory_file) == False):                        
+                            # Looks for the ID in the DIR-File.
+                            idx = common.get_id_position_in_dirfl(buoy_id, directory_file)
+                            if (idx >= 0 ):
+                                # Buoy ID was found in DIR-File
+                                # Makes copies of DIR-File's row.
+                                old_row = directory_file[idx].copy()
+                                row = old_row.copy()
 
-                                # Prints out a log of the buoy's parameters before any changes are applied.
-                                print(f"{' ' * 4}" + f"{int(row[0])}")
-                                print(f"{' ' * 6}" + "Old: WMO = " + f"{old_row[1]}")
-                                # Logs the modified data to the console.
-                                print(f"{' ' * 6}" + "New: WMO = " + f"{row[1]}")
-                                print(' ')
+                                # The 2nd column in DIR-File represents the WMO number.
+                                row[1] = wmo
+                                # The WMO number was changed?
+                                if (old_row[1] != row[1]):
+                                    # Replace with new values.
+                                    new_directory_file[idx] = row
+
+                                    # Prints out a log of the buoy's parameters before any changes are applied.
+                                    print(f"{' ' * 4}" + f"{int(row[0])}")
+                                    print(f"{' ' * 6}" + "Old: WMO = " + f"{old_row[1]}")
+                                    # Logs the modified data to the console.
+                                    print(f"{' ' * 6}" + "New: WMO = " + f"{row[1]}")
+                                    print(' ')
+                            else:
+                                print(buoy_id + ": no match found in DIR-File.")
                         else:
-                            print(buoy_id + ": no match found in DIR-File.")
+                            print("Error: WMO number " + f"{int(wmo)}" + " already exists.")
                     else:
                         print("Error: Check " + f"{input_file_path}" + " format")
                         break

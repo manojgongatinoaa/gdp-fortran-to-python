@@ -80,7 +80,7 @@ def create_new_records_for_directory_file(input_file, directory_file):
                             print(f"{' ' * 4}{'Entry for '}{str(int(buoy_id))}{' already exists in DIR-File. Skip to the nex ID.'}")
                         else:
                             db_manager = DatabaseManager()
-                            wmo             = float(db_manager.select_wmo(str(int(buoy_id))))
+                            wmo             = float(db_manager.select_buoy_wmo(str(int(buoy_id))))
                             sensor_type     = fill_sensor_type_array(int(buoy_type))
                             zero            = float(0)
 
