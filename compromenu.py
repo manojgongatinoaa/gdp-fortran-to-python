@@ -7,6 +7,7 @@
 from cridlist import cridlist_main_menu
 from crtmpfl import crtmpfl30_main_menu
 from crrunaccedit import crrunaccedit
+from crrunkrig import crrunkrig
 from helper import Menu
 
 def return_function(choice):
@@ -14,6 +15,8 @@ def return_function(choice):
         cridlist_main_menu()
     elif (choice == 3):
         crrunaccedit()
+    elif (choice == 4):
+        crrunkrig()
     elif (choice == 6):
         crtmpfl30_main_menu()
     elif (choice < 0):
