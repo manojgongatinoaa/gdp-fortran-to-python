@@ -7,22 +7,6 @@
 from cridlist_according_drogue_status import according_drogue_status
 from helper import Menu
 
-def option_1():
-    print("You selected Option 1.")
-    # Add your command logic here for Option 1
-
-def option_2():
-    print("You selected Option 2.")
-    # Add your command logic here for Option 2
-
-def option_3():
-    print("You selected Option 3.")
-    # Add your command logic here for Option 3
-
-def option_4():
-    print("You selected Option 4.")
-    # Add your command logic here for Option 4
-
 def return_function(choice):
     if (abs(choice) == 5):
         according_drogue_status(choice)
@@ -37,10 +21,6 @@ def cridlist_main_menu():
     title = '\n' + f"{' ' * 9}{'M E N U (cridlist)'}"  + '\n'
     title = title + f"{' ' * 9}{'=========================='}"
     menu_dictionary = {
-        "1. ": "Option 1",
-        "2. ": "Option 2",
-        "3. ": "Option 3",
-        "4. ": "Option 4",
         "5. ": "All active buoys with drogue ON (-5 = with drogue OFF)" + '\n' + f"{' ' * 13}{'separated by manufacturer if needed'}"
     }
     last_option_description = "Exit"

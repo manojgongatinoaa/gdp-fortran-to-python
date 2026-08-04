@@ -67,62 +67,74 @@ class CommonFunctions:
 
     # To change an element in a specific column of a tmpfl30.dat file.
     def change_element_tmpfl(self, file_path, idx_row, idx_column, new_value):
-        # Step 1: Read all lines into memory
-        with open(file_path, 'r') as file:
-            lines = file.readlines()
+        lines = []
+        try:
+            # Step 1: Read all lines into memory
+            with open(file_path, 'r') as file:
+                lines = file.readlines()
+        except OSError as e:
+            # f"Error Code: {e.errno}")     = OS error number (e.g., 2 for missing file)
+            # f"Message: {e.strerror}")     = Human-readable OS error string
+            # f"Target File: {e.filename}") = Name of the file causing the issue
+            message = f"Error Code: {e.errno}, " + f"Message: {e.strerror}, " + f"Target File: {e.filename}"
+            print(message)
+        finally:
+            if file:
+                file.close # Always executes, ensuring the stream is freed
 
-        # Split the line
-        columns = lines[idx_row].split()
+        if (len(lines) > 0):
+            # Split the line
+            columns = lines[idx_row].split()
 
-        # Creates old line to add existing in the tmpfl30.dat file.
-        old_line = '{:>16}'.format(columns[0])              # buoy ID
-        old_line = old_line + '{:>8}'.format(columns[1])    # esperiment number
-        old_line = old_line + '{:>12}'.format(columns[2])   # start time
-        old_line = old_line + '{:>12}'.format(columns[3])   # end time
-        old_line = old_line + '\n'
-    
-        # Step 2: Modify the element at Row idx_row, Column idex_column
-        columns[idx_column] = new_value
-
-        # Creates new line to add to the tmpfl30.dat file.
-        new_line = '{:>16}'.format(columns[0])              # buoy ID
-        new_line = new_line + '{:>8}'.format(columns[1])    # esperiment number
-        new_line = new_line + '{:>12}'.format(columns[2])   # start time
-        new_line = new_line + '{:>12}'.format(columns[3])   # end time
-        new_line = new_line + '\n'
+            # Creates old line to add existing in the tmpfl30.dat file.
+            old_line = '{:>16}'.format(columns[0])              # buoy ID
+            old_line = old_line + '{:>8}'.format(columns[1])    # esperiment number
+            old_line = old_line + '{:>12}'.format(columns[2])   # start time
+            old_line = old_line + '{:>12}'.format(columns[3])   # end time
+            old_line = old_line + '\n'
         
-        # Reconstruct the line and save it back to the list
-        lines[idx_row] = new_line
+            # Step 2: Modify the element at Row idx_row, Column idex_column
+            columns[idx_column] = new_value
 
-        # Validate: start time must be less than end time if end time greater than 0.0
-        start_time = float(columns[2])
-        end_time = float(columns[3])
+            # Creates new line to add to the tmpfl30.dat file.
+            new_line = '{:>16}'.format(columns[0])              # buoy ID
+            new_line = new_line + '{:>8}'.format(columns[1])    # esperiment number
+            new_line = new_line + '{:>12}'.format(columns[2])   # start time
+            new_line = new_line + '{:>12}'.format(columns[3])   # end time
+            new_line = new_line + '\n'
+            
+            # Reconstruct the line and save it back to the list
+            lines[idx_row] = new_line
 
-        valid = False
-        if (end_time == 0.0):
-            valid = True
-        elif (end_time > 0.0 and (start_time <= end_time)):
-            valid = True
-        if (valid == True):
-            file = None
-            try:
-                # Step 3: Write the lines back to the file
-                with open(file_path, 'w') as file:
-                    file.writelines(lines)
-                print('\n' + f"{' ' * 9}{'Old: '}{old_line}")
-                print(f"{' ' * 9}{'New: '}{new_line}")
-            except OSError as e:
-                # f"Error Code: {e.errno}")     = OS error number (e.g., 2 for missing file)
-                # f"Message: {e.strerror}")     = Human-readable OS error string
-                # f"Target File: {e.filename}") = Name of the file causing the issue
-                message = f"Error Code: {e.errno}, " + f"Message: {e.strerror}, " + f"Target File: {e.filename}"
-                print(message)
-            finally:
-                if file:
-                    file.close # Always executes, ensuring the stream is freed
-        else:
-            print('\n')
-            print(f"{'Error: Start time must be less than end time ('}{new_line}{')'}")
+            # Validate: start time must be less than end time if end time greater than 0.0
+            start_time = float(columns[2])
+            end_time = float(columns[3])
+
+            valid = False
+            if (end_time == 0.0):
+                valid = True
+            elif (end_time > 0.0 and (start_time <= end_time)):
+                valid = True
+            if (valid == True):
+                file = None
+                try:
+                    # Step 3: Write the lines back to the file
+                    with open(file_path, 'w') as file:
+                        file.writelines(lines)
+                    print('\n' + f"{' ' * 9}{'Old: '}{old_line}")
+                    print(f"{' ' * 9}{'New: '}{new_line}")
+                except OSError as e:
+                    # f"Error Code: {e.errno}")     = OS error number (e.g., 2 for missing file)
+                    # f"Message: {e.strerror}")     = Human-readable OS error string
+                    # f"Target File: {e.filename}") = Name of the file causing the issue
+                    message = f"Error Code: {e.errno}, " + f"Message: {e.strerror}, " + f"Target File: {e.filename}"
+                    print(message)
+                finally:
+                    if file:
+                        file.close # Always executes, ensuring the stream is freed
+            else:
+                print('\n')
+                print(f"{'Error: Start time must be less than end time ('}{new_line}{')'}")
 
 
     def create_timestamped_backup(self, path):

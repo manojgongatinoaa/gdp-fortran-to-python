@@ -6,27 +6,16 @@
 
 from cridlist import cridlist_main_menu
 from crtmpfl import crtmpfl30_main_menu
+from crrunaccedit import crrunaccedit
 from helper import Menu
 
 def return_function(choice):
-    if (choice == 1):
+    if (choice == 2):
         cridlist_main_menu()
-    elif (choice == 2):
-        print('\n' + f"{' ' * 9}{'*** To do ***'}")
     elif (choice == 3):
-        print('\n' + f"{' ' * 9}{'*** To do ***'}")
-    elif (choice == 4):
-        print('\n' + f"{' ' * 9}{'*** To do ***'}")
-    elif (choice == 5):
-        crtmpfl30_main_menu()
+        crrunaccedit()
     elif (choice == 6):
-        print('\n' + f"{' ' * 9}{'*** To do ***'}")
-    elif (choice == 7):
-        print('\n' + f"{' ' * 9}{'*** To do ***'}")
-    elif (choice == 8):
-        print('\n' + f"{' ' * 9}{'*** To do ***'}")
-    elif (choice == 9):
-        print('\n' + f"{' ' * 9}{'*** To do ***'}")
+        crtmpfl30_main_menu()
     elif (choice < 0):
         print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")
     else:
@@ -35,20 +24,20 @@ def return_function(choice):
             print("Goodbye!" + '\n')
 
 def main_menu():
-    title = '\n' + f"{' ' * 9}{'M E N U (comprocmenu)'}"  + '\n'
+    title = '\n' + f"{' ' * 9}{'M E N U (compromenu)'}"  + '\n'
     title = title + f"{' ' * 9}{'=========================='}"
     menu_dictionary = {
-        "1. ": "create list of ids",
-        "2. ": "mainedit runstream",
-        "3. ": "krignew runstream",
-        "4. ": "work with wmogts file",
-        "5. ": "create/update temp file (tmpfl30.dat)",
-        "6. ": "runstream to check for gaps (chktimdif3)",
-        "7. ": "create a dire print out of sele ids",
-        "8. ": "create runstream to run rdprint",
-        "9. ": "update wmo# in direct file" + '\n' + f"{' ' * 13}{'from deployed.log, and find prog differences'}"
+        " 2. ": "create list of ids",
+        " 3. ": "create mainedit runstream",
+        " 4. ": "create krignew runstream",
+        " 5. ": "work with wmogts file",
+        " 6. ": "create/update temp file (tmpfl30.dat)",
+        " 7. ": "runstream to check for gaps (chktimdif3)",
+        "10. ": "create a dire print out of sele ids",
+        "14. ": "create runstream to run rdprint",
+        "16. ": "update wmo# in direct file" + '\n' + f"{' ' * 14}{'from deployed.log, and find prog differences'}"
     }
-    last_option_description = "Exit"
+    last_option_description = " Exit"
 
     my_menu = Menu(title, menu_dictionary, last_option_description, return_function)
     my_menu.loop()

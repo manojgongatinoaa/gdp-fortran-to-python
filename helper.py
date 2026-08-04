@@ -16,6 +16,10 @@ class Menu:
         # Adding the "Exit" option
         self.dictionary["0. "] = last_option_description # Adds a brand-new key-value pair
         self.return_function = return_function
+        # Get the keys view
+        # Convert every element to an integer
+        self.all_options = [int(float(x)) for x in list(self.dictionary.keys())]
+        self.last_option = str(self.all_options[-2])
     
     # Displaying Options: The display() method showcases the available options to 
     #                     the user, along with corresponding index numbers. The 
@@ -35,9 +39,8 @@ class Menu:
 
         try:
             # The input() function always returns a string
-            last_option = str(len(self.dictionary) - 1)
-            choice = int(input('\n' + f"{' ' * 9}{'Enter your choice (0-'}{last_option}{'): '}"))
-            if (abs(choice) < 0 or abs(choice) > int(last_option)):
+            choice = int(input('\n' + f"{' ' * 9}{'Enter your choice (0-'}{self.last_option}{'): '}"))
+            if (choice not in self.all_options):
                 print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")
                 return self.loop()
             else :
@@ -69,9 +72,8 @@ class Loop_Menu(Menu):
 
         try:
             # The input() function always returns a string
-            last_option = str(len(self.dictionary) - 1)
-            choice = int(input('\n' + f"{' ' * 9}{'Enter your choice (0-'}{last_option}{'): '}"))
-            if (abs(choice) < 0 or abs(choice) > int(last_option)):
+            choice = int(input('\n' + f"{' ' * 9}{'Enter your choice (0-'}{self.last_option}{'): '}"))
+            if (choice not in self.all_options):
                 print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")
                 return self.loop()
             else :

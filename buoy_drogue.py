@@ -2,7 +2,7 @@
 
 # Programer: CG July 2026
 
-# Class to safely and easily manage common DIR-File operations.
+# Class to safely and easily manage common drogue operations.
 class BuoyDrogue:
     def __init__(self, dirfl, gdt):
         self.dirfl = dirfl # The Dir-File

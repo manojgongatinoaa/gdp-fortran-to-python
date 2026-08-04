@@ -11,6 +11,8 @@ from directory_file import DirectoryFile
 from file_manager import FileManager
 from database_manager import DatabaseManager
 
+# This function receives a list of IDs and creates individual text files
+# separated by their manufacturer.
 # Parameters:
 # buoy_list -         The incoming data array containing buoy properties. 
 #                     First column is the ID, second column is the experiment_number, 
@@ -18,9 +20,6 @@ from database_manager import DatabaseManager
 # output_files_path - A character string containing the root directory path
 #                     or for the output files.
 def byman(buoy_list, output_files_path):
-    # This function receives a list of IDs and creates individual text files
-    # separated by their manufacturer.
-
     if ((output_files_path) and (not output_files_path.endswith('/'))):
             output_files_path += "/"
     
@@ -179,19 +178,25 @@ def byman(buoy_list, output_files_path):
         if txt_file:
             txt_file.close # Always executes, ensuring the stream is freed
 
+# This function creates separate files with IDs by manufacturer
+# Parameters:
+# drogues_lis      - The complete output file name created with all Ids before separation.
+# sorted_buoy_list - The incoming data array containing buoy properties. 
+#                    First column is the ID, second column is the experiment_number, 
+#                    and the third column is the buoy type.
 def separate_by_manufacture(drogues_lis, sorted_buoy_list):
     while True:
-        print(f"{' ' * 9}{'enter: 1. to create separate files with ids by manufacturer'}")
-        print(f"{' ' * 16}{'0. to return'}")
+        print(f"{' ' * 9}{'1. to create separate files with ids by manufacturer'}")
+        print(f"{' ' * 9}{'0. to return'}")
         try:
             # The input() function always returns a string
             option = int(input('\n' + f"{' ' * 9}{'Enter your choice (0-1): '}"))
             if option == 1:
                 # Creates separate files with IDs by manufacturer.
-                output_files_path = os.path.dirname(os.path.abspath(drogues_lis))
+                files_path = os.path.dirname(os.path.abspath(drogues_lis))
                 print('\n')
                 print(f"{'Wait!: Separating files by manufacturer...'}" + '\n')
-                byman(sorted_buoy_list, output_files_path)
+                byman(sorted_buoy_list, files_path)
                 print("Ready!")
             elif option == 0:
                 print('\n')
@@ -204,6 +209,8 @@ def separate_by_manufacture(drogues_lis, sorted_buoy_list):
             # Triggers if the user types letters, symbols, or floats instead of an integer
             ('\n' + f"{' ' * 9}{'Invalid input! Please enter a whole number.'}")
 
+# This function runs the option 5 from cridlist.py to create a list with all 
+# active buoys with drogue ON or OFF and separated by manufacturer if needed.
 def according_drogue_status(choice):
     txt = ''
     if choice == 5:
@@ -222,9 +229,9 @@ def according_drogue_status(choice):
     print(f"{' ' * 9}{'Enter the complete output file name to be created,'}")
     drogues_lis = str(input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/drogues.lis): '}"))
 
-    # Filters the buoys based on whether the drogue is ON or OFF
     gdt = 0.0 # all buoys anyways
     buoy_drogue = BuoyDrogue(directory_file, gdt)
+    # Filters the buoys based on whether the drogue is ON or OFF
     buoy_list = buoy_drogue.drogue(choice) # Result list format: buoy_id, experiment_number, buoy_type
     # Sorting by buoy ID in ascending order
     sorted_buoy_list= sorted(buoy_list, key = lambda x: x[0])
@@ -233,17 +240,17 @@ def according_drogue_status(choice):
     print('\n')
     print(f"{'Number of buoys with drogue '}{txt}{': '}{len(sorted_buoy_list)}" + '\n')
 
-    formatted = []
+    formatted_line = []
     for row in sorted_buoy_list:
         # Format: 1 starting space, a 15-character integer field, 
         #         another space, and two 9-character integer fields).
         line = ['{:>16}'.format(str(row[0])), '{:>10}'.format(str(row[1])), '{:>9}'.format(str(row[2]))]        
-        formatted.append(line)
+        formatted_line.append(line)
 
     file_manager = FileManager()
     try:
         # Write to a text file
-        txt_file = file_manager.write_list('', drogues_lis, formatted)
+        txt_file = file_manager.write_list('', drogues_lis, formatted_line)
         # Prints a message to the console showing the created file.
         print(f"{'File '}{drogues_lis}{' was created.'}" + '\n')
     except OSError as e:
