@@ -113,7 +113,7 @@ def update_start_info_in_directory_file(input_file):
 def update_start_info():
     print('\n')
     print(f"{' ' * 9}{'Enter complete file name where info for records are,'}")
-    input_file = str(input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/start.lis): '}"))
+    input_file = input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/start.lis): '}")
 
     print('\n')
     print(f"{' ' * 9}{'Expected file format: id, start_time, start_latitude, start_longitude (-long is East, +long 0-180 = W)'}")

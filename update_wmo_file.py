@@ -97,7 +97,7 @@ def update_wmo_in_directory_file(input_file):
 def update_wmo():
     print('\n')
     print(f"{' ' * 9}{'Enter complete file name where info for records are,'}")
-    input_file = str(input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/wmo.lis): '}"))
+    input_file = input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/wmo.lis): '}")
 
     print('\n')
     print(f"{' ' * 9}{'Expected file format: id, wmo'}")

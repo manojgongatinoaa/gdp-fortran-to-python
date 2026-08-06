@@ -227,7 +227,7 @@ def according_drogue_status(choice):
     print(f"{'Number of DIR-File records: '}{len(directory_file)}" + '\n')
     
     print(f"{' ' * 9}{'Enter the complete output file name to be created,'}")
-    drogues_lis = str(input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/drogues.lis): '}"))
+    drogues_lis = input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/drogues.lis): '}")
 
     gdt = 0.0 # all buoys anyways
     buoy_drogue = BuoyDrogue(directory_file, gdt)

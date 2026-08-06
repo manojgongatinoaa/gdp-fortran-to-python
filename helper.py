@@ -12,24 +12,50 @@ class Menu:
     #                 user should be directed after interacting with the menu.
     def __init__(self, title, dictionary, last_option_description, return_function = None):
         self.title = title
-        self.dictionary = dictionary
-        # Adding the "Exit" option
-        self.dictionary["0. "] = last_option_description # Adds a brand-new key-value pair
+        self.last_option_description = last_option_description
+        if (dictionary != None):
+            self.dictionary = dictionary
+            # Get the first key
+            self.first_key = int(float(next(iter(self.dictionary))))
+            # Get the last key
+            self.last_key = int(float(next(reversed(self.dictionary))))
+            # Adding the "Exit" option
+            if (self.last_key > 9): # 2 digits?
+                key = " 0. "
+            else:
+                key = "0. "
+            self.dictionary[key] = last_option_description # Adds a brand-new key-value pair
+            # Get the keys view
+            # Convert every element to an integer
+            self.all_options = [int(float(x)) for x in list(self.dictionary.keys())]
         self.return_function = return_function
+
+    def set_dictionary(self, dictionary):
+        self.dictionary = dictionary
+        # Get the first key
+        self.first_key = int(float(next(iter(self.dictionary))))
+        # Get the last key
+        self.last_key = int(float(next(reversed(self.dictionary))))
+        # Adding the "Exit" option
+        if (self.last_key > 9): # 2 digits?
+            key = " 0. "
+        else:
+            key = "0. "
+        self.dictionary[key] = self.last_option_description # Adds a brand-new key-value pair
         # Get the keys view
         # Convert every element to an integer
         self.all_options = [int(float(x)) for x in list(self.dictionary.keys())]
-        self.last_option = str(self.all_options[-2])
-    
+
     # Displaying Options: The display() method showcases the available options to 
     #                     the user, along with corresponding index numbers. The 
     #                     options are color-coded for improved visibility.        
     def display(self, index = 1):
-        print(self.title)
-        # Iterating through a dictionary
-        # Loop through both keys and values simultaneously
-        for key, value in self.dictionary.items():
-            print(f"{' ' * 9}{key} {value}")
+        if (self.dictionary != None):
+            print(self.title)
+            # Iterating through a dictionary
+            # Loop through both keys and values simultaneously
+            for key, value in self.dictionary.items():
+                print(f"{' ' * 9}{key} {value}")
 
     # User Interaction Loop: The loop() method is the heart of the Menu class. 
     #                        It displays the menu, prompts the user for input, 
@@ -39,8 +65,8 @@ class Menu:
 
         try:
             # The input() function always returns a string
-            choice = int(input('\n' + f"{' ' * 9}{'Enter your choice (0-'}{self.last_option}{'): '}"))
-            if (choice not in self.all_options):
+            choice = int(input('\n' + f"{' ' * 9}{'Enter your choice ('}{self.first_key}{'-'}{self.last_key}{'): '}"))
+            if (abs(choice) not in self.all_options):
                 print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")
                 return self.loop()
             else :
@@ -72,7 +98,7 @@ class Loop_Menu(Menu):
 
         try:
             # The input() function always returns a string
-            choice = int(input('\n' + f"{' ' * 9}{'Enter your choice (0-'}{self.last_option}{'): '}"))
+            choice = int(input('\n' + f"{' ' * 9}{'Enter your choice (0-'}{self.last_key}{'): '}"))
             if (choice not in self.all_options):
                 print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")
                 return self.loop()

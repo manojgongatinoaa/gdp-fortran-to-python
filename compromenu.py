@@ -40,7 +40,7 @@ def main_menu():
         "14. ": "create runstream to run rdprint",
         "16. ": "update wmo# in direct file" + '\n' + f"{' ' * 14}{'from deployed.log, and find prog differences'}"
     }
-    last_option_description = " Exit"
+    last_option_description = "Exit"
 
     my_menu = Menu(title, menu_dictionary, last_option_description, return_function)
     my_menu.loop()

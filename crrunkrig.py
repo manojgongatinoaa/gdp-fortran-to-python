@@ -11,11 +11,11 @@ from file_manager import FileManager
 def crrunkrig():
     print('\n')
     print(f"{' ' * 9}{'Enter the complete file name where IDs to process are,'}")
-    ids_lis = str(input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/dead_ids.lis): '}"))
+    ids_lis = input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/dead_ids.lis): '}")
 
     print('\n')
     print(f"{' ' * 9}{'Enter directory where runstream will go,'}")
-    destination_path = str(input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/): '}"))
+    destination_path = input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/): '}")
     # Check if the last character is not a slash.
     if ((destination_path) and (not destination_path.endswith('/'))):
         destination_path += "/"

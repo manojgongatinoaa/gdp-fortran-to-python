@@ -7,30 +7,6 @@ from directory_file import DirectoryFile
 from file_manager import FileManager
 from common import CommonFunctions
 
-# Fills the six generic "sensor" flags.   
-def fill_sensor_type_array(buoy_type):
-    # Sensor-type array to prepare depending the buoy type
-    sensor_type = [0.0] * 6 # # Creates [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-    for i in range(3):
-        sensor_type[i] = float(i + 1)   # Elements 1, 2, and 3 are configured with 1.0, 2.0, 3.0.
-    if (buoy_type == 9.0):              # If the buoy type is 9.0,
-        sensor_type[3] = 9.0            # elements 4, 5, and 6 are configured with 9.0.
-        sensor_type[4] = 9.0
-        sensor_type[5] = 9.0
-    elif (buoy_type == 8.0):            # If the buoy type is 8.0,
-        sensor_type[3] = 7.0            # elements 4 and 5 are configured with 7.0.
-        sensor_type[4] = 7.0
-    elif (buoy_type == 11.0):           # If the buoy type is 11.0 (salinity buoy),
-        sensor_type[4] = 9.0            # elements 5 and 6 are configured with 9.0.
-        sensor_type[5] = 9.0
-    elif (buoy_type == 12.0):           # If the buoy type is 12.0 (barometric/wind),
-        sensor_type[3] = 7.0            # element 4 is configured with 7.0,
-        sensor_type[4] = 1.0            # element 5 is configured with 1.0.
-    elif (buoy_type == 13.0):           # If the buoy type is 13.0 (pure wind),
-        sensor_type[4] = 1.0            # element 5 is configured with 1.0.
-
-    return sensor_type
-
 def create_new_records_for_directory_file(input_file, directory_file):
 #    print(*input_file, sep ='\n')
     new_records = []
@@ -81,7 +57,7 @@ def create_new_records_for_directory_file(input_file, directory_file):
                         else:
                             db_manager = DatabaseManager()
                             wmo             = float(db_manager.select_buoy_wmo(str(int(buoy_id))))
-                            sensor_type     = fill_sensor_type_array(int(buoy_type))
+                            sensor_type     = common.fill_sensor_type_array(int(buoy_type))
                             zero            = float(0)
 
                             # Creates new record to add into the directory file.
@@ -140,7 +116,7 @@ def create_new_records_for_directory_file(input_file, directory_file):
 def add_new_record():
     print('\n')
     print(f"{' ' * 9}{'Enter complete file name where info for records are,'}")
-    input_file = str(input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/new.lis): '}"))
+    input_file = input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/new.lis): '}")
 
     print('\n')
     print(f"{' ' * 9}{'Expected file format: id, buoy_type, project_number, start_time, start_latitude, start_longitude.'}")

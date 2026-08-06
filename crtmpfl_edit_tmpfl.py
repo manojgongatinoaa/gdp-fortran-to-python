@@ -28,7 +28,7 @@ def edit_tmpfl_elemt(column, element):
 def edit_tmpfl_start_time():
     common = CommonFunctions()
     print('\n')
-    start_time = str(input(f"{' ' * 9}{'Enter new beginning time: '}"))
+    start_time = input(f"{' ' * 9}{'Enter new beginning time: '}")
     if (common.is_float(start_time) == True):
         # tmpfl30.dat 3rd column represents the deployment date. 
         column = 2
@@ -40,7 +40,7 @@ def edit_tmpfl_start_time():
 def edit_tmpfl_last_time():
     common = CommonFunctions()
     print('\n')
-    end_time = str(input(f"{' ' * 9}{'Enter new last day buoy had good temperature: '}"))
+    end_time = input(f"{' ' * 9}{'Enter new last day buoy had good temperature: '}")
     if (common.is_float(end_time) == True):
         # tmpfl30.dat 4th column represents the deployment date. 
         column = 3
@@ -67,7 +67,7 @@ def return_function(choice):
 def edit_tmpfl():
     # tmpfl30.dat format: Drifter ID, Experiment number, Deployment start time, Last good temperature day (end time)
     print('\n')
-    input_buoy_id = str(input(f"{' ' * 9}{'Enter buoy ID to work with: '}"))
+    input_buoy_id = input(f"{' ' * 9}{'Enter buoy ID to work with: '}")
 
     # Read existing tmpfl30.dat file
     tmpfl30 = tmpfl_file.rtmpfl30()

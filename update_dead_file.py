@@ -129,7 +129,7 @@ def update_dead_info_in_directory_file(input_file):
 def update_dead_info():
     print('\n')
     print(f"{' ' * 9}{'Enter complete file name where info for records are,'}")
-    input_file = str(input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/dead.lis): '}"))
+    input_file = input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/dead.lis): '}")
 
     print('\n')
     print(f"{' ' * 9}{'Expected file format: id, death_time, death_latitude, death_longitude, death_code'}")

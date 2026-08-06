@@ -131,7 +131,7 @@ def update_drogue_off_date_in_directory_file(input_file):
 def update_drogue_off_date():
     print('\n')
     print(f"{' ' * 9}{'Enter complete file name where info for records are,'}")
-    input_file = str(input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/all_drogue_off.lis): '}"))
+    input_file = input(f"{' ' * 9}{'(ex. /phodnet/drifter/gonzalez/work/all_drogue_off.lis): '}")
 
     print('\n')
     print(f"{' ' * 9}{'Expected file format: id, drogue_off_date'}")
