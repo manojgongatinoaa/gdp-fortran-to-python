@@ -7,7 +7,7 @@ from pathlib import Path
 from database_manager import DatabaseManager
 from file_manager import FileManager
 from common import CommonFunctions
-from helper import Menu
+from menu import Menu
 
 g_exp_no = ''
 g_destination_directory = ''
@@ -170,8 +170,6 @@ def create_record(idx, row, jd_to_date):
             record = record + '{:>9}'.format(str(days_in_trajectory) + ct)
             record = record + '{:>10}'.format(str(days_with_drogue_on) + cd)
             record = record + '{:>11}'.format(str(int(row[2])))
-
-        record = record + '\n'
     
     return record, days_in_trajectory, days_with_drogue_on # Returns a tuple
 
@@ -198,7 +196,7 @@ def create_food(lastot, ndtot):
     note = note + "never worked, therefore, drogue lost day could not" + '\n'
     note = note + "be determined" + '\n'
 
-    return food_star + total +  food_star + note
+    return '\n' + food_star + total +  food_star + note
 
 # This function formats and writes records from DIR-File like buoy id,
 # start time, end timed, drogue-off date, etc) to a specified text file

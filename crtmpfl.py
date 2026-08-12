@@ -6,7 +6,7 @@
 
 from crtmpfl_update_tmpfl import update_tmpfl
 from crtmpfl_edit_tmpfl import edit_tmpfl
-from helper import Menu
+from menu import Menu
 
 def return_function(choice):
     if (choice == 2):

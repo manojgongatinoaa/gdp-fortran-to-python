@@ -6,7 +6,7 @@ from datetime import datetime
 
 from common import CommonFunctions
 from database_manager import DatabaseManager
-from helper import Menu
+from menu import Menu
 from verify import verify
 
 g_jd_to_date = False

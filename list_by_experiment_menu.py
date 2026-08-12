@@ -6,7 +6,7 @@ from pathlib import Path
 
 from database_manager import DatabaseManager
 from file_manager import FileManager
-from helper import Menu
+from menu import Menu
 from direp_print import dprint_active_by_experiment
 from direp_print import dprint_dead_by_experiment
 from direp_print import dprint_all_by_experiment

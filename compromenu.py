@@ -8,7 +8,7 @@ from cridlist import cridlist_main_menu
 from crtmpfl import crtmpfl30_main_menu
 from crrunaccedit import crrunaccedit
 from crrunkrig import crrunkrig
-from helper import Menu
+from menu import Menu
 
 def return_function(choice):
     if (choice == 2):

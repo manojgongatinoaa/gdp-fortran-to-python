@@ -5,7 +5,7 @@
 # Programer: CG July 2026
 
 from cridlist_according_drogue_status import according_drogue_status
-from helper import Menu
+from menu import Menu
 
 def return_function(choice):
     if (abs(choice) == 5):
