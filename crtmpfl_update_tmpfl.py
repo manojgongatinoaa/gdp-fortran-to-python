@@ -6,7 +6,7 @@
 
 from directory_file import DirectoryFile
 from tmpfl_file import TmpflFile
-from common import CommonFunctions
+from database_manager import DatabaseManager
 
 # Add records found in the directory file but not yet in the tmpfl30.dat file.
 def update_tmpfl():
@@ -23,18 +23,14 @@ def update_tmpfl():
     print('\n')
     print(f"{'Wait!: Updating tmpfl.dat30 ...'}")
     
-    tmpfl_file = TmpflFile()
-    # Read existing tmpfl30.dat file
-    tmpfl30 = tmpfl_file.rtmpfl30()
-
     new_lines = []
-    common = CommonFunctions()
+    db_manager = DatabaseManager()
     # Looks for the ID in the DIR-File.
     for row in dirfl:
         # The 1st column in DIR-File represents the drifter ID.
         buoy_id = str(int(row[0])) + "."
         
-        if (common.get_id_position_in_tmpfl30(buoy_id, tmpfl30) == -1):
+        if (db_manager.select_row_number_tmpfl30(buoy_id) == -1):
             # buoy ID not found in tmpfl30.dat
 
             # The 3rd column in DIR-File represents the experiment number.
@@ -51,6 +47,10 @@ def update_tmpfl():
             line = line + '{:>12}'.format(end_time)
 
             new_lines.append(line)
+
+    tmpfl_file = TmpflFile()
+    # Read existing tmpfl30.dat file
+    tmpfl30 = tmpfl_file.rtmpfl30()
 
     if (len(new_lines) > 0):
         print('\n')

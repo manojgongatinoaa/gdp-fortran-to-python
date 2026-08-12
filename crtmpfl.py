@@ -26,8 +26,9 @@ def return_function(choice):
 # It allows the user to back up the data, initialize a new file, append new drifter 
 # records, or manually update the temperature failure dates for specific buoys.    
 def crtmpfl30_main_menu():
-    title = '\n' + f"{' ' * 9}{'M E N U (crtmpfl)'}"  + '\n'
-    title = title + f"{' ' * 9}{'=========================='}"
+    text = "M E N U (crtmpfl)"
+    title = '\n' + f"{' ' * 9}{text}"  + '\n'
+    title = title + f"{' ' * 9}{'=' * len(text)}"
     menu_dictionary = {
         "2. ": "if this is an update",
         "3. ": "if this is to make a change to existing record"

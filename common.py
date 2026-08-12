@@ -9,6 +9,7 @@ from datetime import datetime
 from datetime import timedelta
 
 from file_manager import FileManager
+from database_manager import DatabaseManager
 from constants import BACKUP_DIR
 
 # Class containing the most commonly used functions
@@ -166,6 +167,16 @@ class CommonFunctions:
 
         return [year, month, day]
 
+    # Format into a "MM DD.DD YYYY" string format
+    def format_date(self, date):
+        result = ''
+
+        mm = '{:>2}'.format(f"{date[1]}")
+        dd = '{:>5}'.format(f"{date[2]:.2f}")
+        result = f"{mm} {dd} {date[0]}"
+
+        return result
+
     def jd_to_date(self, jd):
         r = self.jd_to_date_base(jd)
         return datetime.date(r[0], r[1], int(r[2]))
@@ -257,75 +268,53 @@ class CommonFunctions:
         return result
 
     # To change an element in a specific column of a tmpfl30.dat file.
-    def change_element_tmpfl(self, file_path, idx_row, idx_column, new_value):
-        lines = []
-        try:
-            # Step 1: Read all lines into memory
-            with open(file_path, 'r') as file:
-                lines = file.readlines()
-        except OSError as e:
-            # f"Error Code: {e.errno}")     = OS error number (e.g., 2 for missing file)
-            # f"Message: {e.strerror}")     = Human-readable OS error string
-            # f"Target File: {e.filename}") = Name of the file causing the issue
-            message = f"Error Code: {e.errno}, " + f"Message: {e.strerror}, " + f"Target File: {e.filename}"
-            print(message)
-        finally:
-            if file:
-                file.close # Always executes, ensuring the stream is freed
-
-        if (len(lines) > 0):
-            # Split the line
-            columns = lines[idx_row].split()
-
-            # Creates old line to add existing in the tmpfl30.dat file.
-            old_line = '{:>16}'.format(columns[0])              # buoy ID
-            old_line = old_line + '{:>8}'.format(columns[1])    # esperiment number
-            old_line = old_line + '{:>12}'.format(columns[2])   # start time
-            old_line = old_line + '{:>12}'.format(columns[3])   # end time
-            old_line = old_line + '\n'
-        
-            # Step 2: Modify the element at Row idx_row, Column idex_column
-            columns[idx_column] = new_value
-
-            # Creates new line to add to the tmpfl30.dat file.
-            new_line = '{:>16}'.format(columns[0])              # buoy ID
-            new_line = new_line + '{:>8}'.format(columns[1])    # esperiment number
-            new_line = new_line + '{:>12}'.format(columns[2])   # start time
-            new_line = new_line + '{:>12}'.format(columns[3])   # end time
-            new_line = new_line + '\n'
+    def change_element_tmpfl(self, idx_row, idx_column, new_value):
+        db_manager = DatabaseManager()
+        rows = db_manager.select_all_tmpfl30()
+    
+        if (len(rows) > idx_row + 1):
+            row = rows[idx_row] # an string
+            columns = row.split() # a list
+            if (len(columns) > 3):
+                # Creates old line to print a report.
+                old_row = '{:>16}'.format(columns[0])             # buoy ID
+                old_row = old_row + '{:>8}'.format(columns[1])    # esperiment number
+                old_row = old_row + '{:>12}'.format(columns[2])   # start time
+                old_row = old_row + '{:>12}'.format(columns[3])   # end time
+                old_row = old_row + '\n'
             
-            # Reconstruct the line and save it back to the list
-            lines[idx_row] = new_line
+                # Modify the element at Row idx_row, Column idx_column
+                columns[idx_column] = new_value
 
-            # Validate: start time must be less than end time if end time greater than 0.0
-            start_time = float(columns[2])
-            end_time = float(columns[3])
+                # Validate:
+                #     start time must be less than end time if end time greater than 0.0
+                start_time = float(columns[2])
+                end_time = float(columns[3])
 
-            valid = False
-            if (end_time == 0.0):
-                valid = True
-            elif (end_time > 0.0 and (start_time <= end_time)):
-                valid = True
-            if (valid == True):
-                file = None
-                try:
-                    # Step 3: Write the lines back to the file
-                    with open(file_path, 'w') as file:
-                        file.writelines(lines)
-                    print('\n' + f"{' ' * 9}{'Old: '}{old_line}")
-                    print(f"{' ' * 9}{'New: '}{new_line}")
-                except OSError as e:
-                    # f"Error Code: {e.errno}")     = OS error number (e.g., 2 for missing file)
-                    # f"Message: {e.strerror}")     = Human-readable OS error string
-                    # f"Target File: {e.filename}") = Name of the file causing the issue
-                    message = f"Error Code: {e.errno}, " + f"Message: {e.strerror}, " + f"Target File: {e.filename}"
-                    print(message)
-                finally:
-                    if file:
-                        file.close # Always executes, ensuring the stream is freed
-            else:
-                print('\n')
-                print(f"{'Error: Start time must be less than end time ('}{new_line}{')'}")
+                valid = False
+                if (end_time == 0.0):
+                    valid = True
+                elif (end_time > 0.0 and (start_time <= end_time)):
+                    valid = True
+                if (valid):
+                    # Creates new line.
+                    new_row = '{:>16}'.format(columns[0])             # buoy ID
+                    new_row = new_row + '{:>8}'.format(columns[1])    # esperiment number
+                    new_row = new_row + '{:>12}'.format(columns[2])   # start time
+                    new_row = new_row + '{:>12}'.format(columns[3])   # end time
+                    new_row = new_row + '\n'
+                    
+                    # Reconstruct the line to save it back to the tmpfl30.dat file.
+                    rows[idx_row] = new_row
+
+                    print('\n' + f"{' ' * 9}{'Old: '}{old_row}")
+                    print(f"{' ' * 9}{'New: '}{new_row}")
+
+                    db_manager.update_all_tmpfl30(rows)
+
+                else:
+                    print('\n')
+                    print(f"{'Error: Start time must be less than end time ('}{new_line}{')'}")
 
 
     def create_timestamped_backup(self, path):
@@ -359,60 +348,6 @@ class CommonFunctions:
             print(message)
 
         return timestamped_backup_file
-
-    # This function, given an ID, returns the position of that buoy in the directory file.
-    # Parameters:
-    #     buoy_id: An integer used to locate its position in the directory file.
-    #     directory_file: A list with all records in directory file.
-    # Return:
-    #    pos: Row index position corresponding to the buoy ID in DIR-File.
-    def get_id_position_in_dirfl(self, buoy_id, directory_file) -> int:
-        pos = 0
-
-        # Looks for the ID in the DIR-File.
-        for row in directory_file:
-            # row example: 
-            # 300534064897810.0, 4401656.0, 2222.0, 48.0, 17201.041015625,
-            # 43.189998626708984, -28.010000228881836, 17261.75, 41.73809814453125, -27.218000411987305,
-            # 41.0, 44.0, -29.0, -27.0, 17201.041015625,
-            # 1.0, 2.0, 3.0, 0.0, 0.0, 0.0, 0.0
-
-            # The 1st column in DIR-File represents the buoy ID.
-            if (buoy_id == int(row[0])):
-                # Found
-                break
-            pos += 1
-
-        if (pos == len(directory_file)):
-            pos = -1
-
-        return pos
-
-    # This function, given an ID, returns the position of that buoy in the tmpfl30.dat filr.
-    # Parameters:
-    #     buoy_id: An integer used to locate its position in the directory file.
-    #     tmpfl30: A list with all records in tmpfl30.dat file.
-    # Return:
-    #    pos: Row index position corresponding to the buoy ID in tmpfl30.dat file.
-    def get_id_position_in_tmpfl30(self, buoy_id, tmpfl30) -> int:
-        pos = 0
-        found = False
-
-        # Looks for the ID in the tmpfl30.dat.
-        for row in tmpfl30:
-            # row example: 
-            # 300534068922080.   2222.   17214.625       0.000
-
-            # The 1st column in tmpfl30.dat represents the buoy ID. 
-            if (buoy_id in row):
-                found = True
-                break
-            pos += 1
-
-        if (not found):
-            pos = -1
-
-        return pos
     
     # Fills the six generic "sensor" flags.   
     def fill_sensor_type_array(self, buoy_type):

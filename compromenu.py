@@ -27,8 +27,9 @@ def return_function(choice):
             print("Goodbye!" + '\n')
 
 def main_menu():
-    title = '\n' + f"{' ' * 9}{'M E N U (compromenu)'}"  + '\n'
-    title = title + f"{' ' * 9}{'=========================='}"
+    text = "M E N U (compromenu)"
+    title = '\n' + f"{' ' * 9}{text}"  + '\n'
+    title = title + f"{' ' * 9}{'=' * len(text)}"
     menu_dictionary = {
         " 2. ": "create list of ids",
         " 3. ": "create mainedit runstream",

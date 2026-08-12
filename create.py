@@ -5,7 +5,6 @@
 from datetime import datetime
 
 from common import CommonFunctions
-from directory_file import DirectoryFile
 from database_manager import DatabaseManager
 from helper import Menu
 from verify import verify
@@ -41,8 +40,9 @@ def set_menu_dictionary():
         else:
             drog_off_date = '0000/0/0'
 
-    title = '\n' + f"{' ' * 9}{'M E N U (create)'}"  + '\n'
-    title = title + f"{' ' * 9}{'=========================='}"
+    text = "M E N U (create)"
+    title = '\n' + f"{' ' * 9}{text}"  + '\n'
+    title = title + f"{' ' * 9}{'=' * len(text)}"
     menu_dictionary = {
         "1. ": "exp # .............. " + str(int(g_new_row[2])),
         "2. ": "buoy type .......... " + str(int(g_new_row[3])),
@@ -105,8 +105,9 @@ def return_function(choice):
             print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")
 
 def create_menu():
-    title = '\n' + f"{' ' * 9}{'Create Record'}"  + '\n'
-    title = title + f"{' ' * 9}{'=========================='}"
+    text = "Create Record"
+    title = '\n' + f"{' ' * 9}{text}"  + '\n'
+    title = title + f"{' ' * 9}{'=' * len(text)}"
     last_option_description = "no more changes"
 
     global g_menu
@@ -120,9 +121,9 @@ def create_menu():
 #                    to Month/Day/Year. If False, they print as raw decimals.
 def create(jd_to_date):
     # Loads the directory file
-    dirfl = DirectoryFile()
-    directory_file = dirfl.rdirfl50()
-
+    db_manager = DatabaseManager()
+    directory_file = db_manager.select_all_dirfl()
+    
     # Prints a message to the console showing how many rows were successfully loaded.
     print('\n')
     print("Number of DIR-File records: ", len(directory_file), '\n')
@@ -137,8 +138,8 @@ def create(jd_to_date):
     buoy_id = input(f"{' ' * 9}{'Enter buoy ID to work with: '}")
 
     # Looks for the ID in the DIR-File.
-    common = CommonFunctions()
-    idx = common.get_id_position_in_dirfl(int(buoy_id), directory_file)
+    db_manager = DatabaseManager()
+    idx = db_manager.select_row_number_dirfl(int(buoy_id))
     if (idx >= 0 ):
         # Buoy ID was found in DIR-File
         print('\n')
@@ -155,7 +156,6 @@ def create(jd_to_date):
         # The 1nd column in DIR-File represents the buoy ID.
         g_new_row[0] = float(buoy_id)
 
-        db_manager = DatabaseManager()
         wmo = db_manager.select_wmo(buoy_id)
         if (wmo > float(0)):
             # The 2nd column in DIR-File represents the WMO number.
@@ -167,6 +167,7 @@ def create(jd_to_date):
         new_row = verify(g_new_row, jd_to_date, change_record)
 
         if (old_row != new_row):
+            common = CommonFunctions()
             error_message = common.validate_dirfl_record(new_row)
             if (error_message == None):  # Record is valid
                 # Prints out a log of the buoy's parameters before any changes are applied.
@@ -181,7 +182,8 @@ def create(jd_to_date):
                 directory_file.append(new_row)
 
                 # Update the DIR-File.
-                dirfl.wdirfl50(directory_file)
+                db_manager = DatabaseManager()
+                db_manager.update_all_dirfl(directory_file)
                 added_records = 1
                 print('\n')
                 print(f"{'Added records: '}{added_records}" + 

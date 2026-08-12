@@ -19,6 +19,7 @@ IMEI_LUT_DAT        = NEW_DATA_DIR + "IMEI_LUT.dat"
 # Directory file
 #DIR_FILE            = DATA_DIR + "dirfl50.dat"
 
+# for testing purposes
 MY_DATA_DIR = "/phodnet/drifter/gonzalez/programs/python/migration_for2py/data/files/"
 DIR_FILE = MY_DATA_DIR + "dirfl50.dat"
 BACKUP_DIR = MY_DATA_DIR + "save"

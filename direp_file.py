@@ -39,8 +39,9 @@ def return_function(choice):
             print("Goodbye!" + '\n')
 
 def main_menu():
-    title = '\n' + f"{' ' * 9}{'M E N U (direp_file)'}"  + '\n'
-    title = title + f"{' ' * 9}{'=========================='}"
+    text = "M E N U (direp_file)"
+    title = '\n' + f"{' ' * 9}{text}"  + '\n'
+    title = title + f"{' ' * 9}{'=' * len(text)}"
     menu_dictionary = {
         "1. ": "to  create  new record",
         "2. ": "to update drogue information",

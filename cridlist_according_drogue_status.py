@@ -60,7 +60,7 @@ def byman(buoy_list, output_files_path):
 
     db_manager = DatabaseManager()
     # Loading the entire file into memory once.
-    matrix = db_manager.select_buoy_manufacturer()
+    matrix = db_manager.select_all_manufacturer()
     #print(*matrix, sep="\n")
 
     # It loops through each buoy ID.
@@ -176,15 +176,15 @@ def byman(buoy_list, output_files_path):
             print(message)
     finally:
         if txt_file:
-            txt_file.close # Always executes, ensuring the stream is freed
+            txt_file.close() # Always executes, ensuring the stream is freed
 
 # This function creates separate files with IDs by manufacturer
 # Parameters:
 # drogues_lis      - The complete output file name created with all Ids before separation.
-# sorted_buoy_list - The incoming data array containing buoy properties. 
+# buoy_list        - The incoming data array containing buoy properties. 
 #                    First column is the ID, second column is the experiment_number, 
 #                    and the third column is the buoy type.
-def separate_by_manufacture(drogues_lis, sorted_buoy_list):
+def separate_by_manufacture(drogues_lis, buoy_list):
     while True:
         print(f"{' ' * 9}{'1. to create separate files with ids by manufacturer'}")
         print(f"{' ' * 9}{'0. to return'}")
@@ -196,7 +196,7 @@ def separate_by_manufacture(drogues_lis, sorted_buoy_list):
                 files_path = os.path.dirname(os.path.abspath(drogues_lis))
                 print('\n')
                 print(f"{'Wait!: Separating files by manufacturer...'}" + '\n')
-                byman(sorted_buoy_list, files_path)
+                byman(buoy_list, files_path)
                 print("Ready!")
             elif option == 0:
                 print('\n')
@@ -219,8 +219,8 @@ def according_drogue_status(choice):
         txt = "OFF"
         
     # Loads the directory file
-    dirfl = DirectoryFile()
-    directory_file = dirfl.rdirfl50()
+    db_manager = DatabaseManager()
+    directory_file = db_manager.select_all_dirfl()
 
     # Prints a message to the console showing how many rows were successfully loaded.
     print('\n')
@@ -232,16 +232,17 @@ def according_drogue_status(choice):
     gdt = 0.0 # all buoys anyways
     buoy_drogue = BuoyDrogue(directory_file, gdt)
     # Filters the buoys based on whether the drogue is ON or OFF
-    buoy_list = buoy_drogue.drogue(choice) # Result list format: buoy_id, experiment_number, buoy_type
+    # Result list format: buoy_id, experiment_number, buoy_type
+    list = buoy_drogue.drogue(choice)
     # Sorting by buoy ID in ascending order
-    sorted_buoy_list= sorted(buoy_list, key = lambda x: x[0])
+    buoy_list= sorted(list, key = lambda x: x[0])
 
     # Prints a message to the console showing how many buoys have the drogue ON or OFF.
     print('\n')
-    print(f"{'Number of buoys with drogue '}{txt}{': '}{len(sorted_buoy_list)}" + '\n')
+    print(f"{'Number of buoys with drogue '}{txt}{': '}{len(buoy_list)}" + '\n')
 
     formatted_line = []
-    for row in sorted_buoy_list:
+    for row in buoy_list:
         # Format: 1 starting space, a 15-character integer field, 
         #         another space, and two 9-character integer fields).
         line = ['{:>16}'.format(str(row[0])), '{:>10}'.format(str(row[1])), '{:>9}'.format(str(row[2]))]        
@@ -261,11 +262,11 @@ def according_drogue_status(choice):
             print(message)
     finally:
         if txt_file:
-            txt_file.close # Always executes, ensuring the stream is freed
+            txt_file.close() # Always executes, ensuring the stream is freed
 
     # After loading the ID list found in DIR-File and filtering
     # the buoys based on whether the drogue is ON or OFF
     # we have to create separate files with IDs by manufacturer
-    separate_by_manufacture(drogues_lis, sorted_buoy_list)            
+    separate_by_manufacture(drogues_lis, buoy_list)            
 
 

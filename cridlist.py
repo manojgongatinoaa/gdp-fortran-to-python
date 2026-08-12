@@ -18,8 +18,9 @@ def return_function(choice):
             print("Exit!")
     
 def cridlist_main_menu():
-    title = '\n' + f"{' ' * 9}{'M E N U (cridlist)'}"  + '\n'
-    title = title + f"{' ' * 9}{'=========================='}"
+    text = "M E N U (cridlist)"
+    title = '\n' + f"{' ' * 9}{text}"  + '\n'
+    title = title + f"{' ' * 9}{'=' * len(text)}"
     menu_dictionary = {
         "5. ": "All active buoys with drogue ON (-5 = with drogue OFF)" + '\n' + f"{' ' * 13}{'separated by manufacturer if needed'}"
     }

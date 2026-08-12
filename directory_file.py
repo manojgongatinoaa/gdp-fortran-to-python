@@ -66,7 +66,7 @@ class DirectoryFile:
             print(message)
         finally:
             if directory_file:
-                directory_file.close # Always executes, ensuring the stream is freed
+                directory_file.close() # Always executes, ensuring the stream is freed
 
         # A 2D array.
         # It holds the directory file buoys across 22 parameters.
@@ -99,4 +99,4 @@ class DirectoryFile:
             print(message)
         finally:
             if file:
-                file.close # Always executes, ensuring the stream is freed
+                file.close() # Always executes, ensuring the stream is freed

@@ -29,6 +29,12 @@ class Menu:
             # Convert every element to an integer
             self.all_options = [int(float(x)) for x in list(self.dictionary.keys())]
         self.return_function = return_function
+        self.with_selection = True
+
+    def set_with_selection(self, flag):
+        self.with_selection = flag
+        # Remove the last item
+        removed_item = self.dictionary.popitem()
 
     def set_dictionary(self, dictionary):
         self.dictionary = dictionary
@@ -65,7 +71,11 @@ class Menu:
 
         try:
             # The input() function always returns a string
-            choice = int(input('\n' + f"{' ' * 9}{'Enter your choice ('}{self.first_key}{'-'}{self.last_key}{'): '}"))
+            if (self.with_selection):
+                choice = int(input('\n' + f"{' ' * 9}{'Enter your choice ('}{self.first_key}{'-'}{self.last_key}{'): '}"))
+            else:
+                choice = int(input('\n' + f"{' ' * 9}{'Enter 0 to continue: '}"))
+
             if (abs(choice) not in self.all_options):
                 print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")
                 return self.loop()

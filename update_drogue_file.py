@@ -2,17 +2,17 @@
 
 # Programer: CG July 2026
 
-from directory_file import DirectoryFile
 from file_manager import FileManager
 from common import CommonFunctions
+from database_manager import DatabaseManager
 
 def update_drogue_off_date_in_directory_file(input_file):
 #    print(*input_file, sep ='\n')
     result = None
     
     # Loads the directory file
-    dirfl = DirectoryFile()
-    directory_file = dirfl.rdirfl50()
+    db_manager = DatabaseManager()
+    directory_file = db_manager.select_all_dirfl()
     # Makes a copy of DIR-File.
     new_directory_file = directory_file.copy()
 
@@ -47,7 +47,7 @@ def update_drogue_off_date_in_directory_file(input_file):
                         drogue_off_date = float(columns[1])
                         
                         # Looks for the ID in the DIR-File.
-                        idx = common.get_id_position_in_dirfl(buoy_id, directory_file)
+                        idx = db_manager.select_row_number_dirfl(buoy_id)
                         if (idx >= 0 ):
                             # Buoy ID was found in DIR-File
                             # Makes copies of DIR-File's row.
@@ -114,7 +114,7 @@ def update_drogue_off_date_in_directory_file(input_file):
             print(message)
     finally:
         if file:
-            file.close # Always executes, ensuring the stream is freed
+            file.close() # Always executes, ensuring the stream is freed
 
     if (common.compare_2D_float_lists(new_directory_file, directory_file) == False):
         result = new_directory_file
@@ -146,7 +146,7 @@ def update_drogue_off_date():
 
     if (new_directory_file != None):
         # Update the directory file
-        dirfl = DirectoryFile()
-        dirfl.wdirfl50(new_directory_file)
+        db_manager = DatabaseManager()
+        db_manager.update_all_dirfl(new_directory_file)
     else:
         print(f"{' ' * 4}" + "No changes")

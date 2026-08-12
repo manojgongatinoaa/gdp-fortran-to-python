@@ -3,7 +3,6 @@
 # Programer: CG July 2026
 
 from database_manager import DatabaseManager
-from directory_file import DirectoryFile
 from file_manager import FileManager
 from common import CommonFunctions
 
@@ -50,13 +49,13 @@ def create_new_records_for_directory_file(input_file, directory_file):
                             break
                         
                         # Looks for the ID in the DIR-File.
-                        idx = common.get_id_position_in_dirfl(buoy_id, directory_file)
+                        db_manager = DatabaseManager()
+                        idx = db_manager.select_row_number_dirfl(buoy_id)
                         if (idx >= 0 ):
                             # Buoy ID was found in DIR-File
                             print(f"{' ' * 4}{'Entry for '}{str(int(buoy_id))}{' already exists in DIR-File. Skip to the nex ID.'}")
                         else:
-                            db_manager = DatabaseManager()
-                            wmo             = float(db_manager.select_buoy_wmo(str(int(buoy_id))))
+                            wmo             = float(db_manager.select_by_wmo(str(int(buoy_id))))
                             sensor_type     = common.fill_sensor_type_array(int(buoy_type))
                             zero            = float(0)
 
@@ -105,7 +104,7 @@ def create_new_records_for_directory_file(input_file, directory_file):
             print(message)
     finally:
         if file:
-            file.close # Always executes, ensuring the stream is freed
+            file.close() # Always executes, ensuring the stream is freed
 
     return new_records
 
@@ -122,8 +121,8 @@ def add_new_record():
     print(f"{' ' * 9}{'Expected file format: id, buoy_type, project_number, start_time, start_latitude, start_longitude.'}")
 
     # Loads the directory file
-    dirfl = DirectoryFile()
-    directory_file = dirfl.rdirfl50()
+    db_manager = DatabaseManager
+    directory_file = db_manager.select_all_dirfl()
 
     # Prints a message to the console showing how many rows were successfully loaded.
     print('\n')
@@ -136,7 +135,7 @@ def add_new_record():
         for i in range(len(new_records)):
             directory_file.append(new_records[i])
         #print(*directory_file, sep ='\n')
-        dirfl.wdirfl50(directory_file)
+        db_manager.update_all_dirfl(directory_file)
         added_records = len(new_records)
         print('\n')
         print(f"{'Added records: '}{added_records}" + 

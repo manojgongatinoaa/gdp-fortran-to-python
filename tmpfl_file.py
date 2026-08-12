@@ -3,7 +3,6 @@
 # programer: CG August 2026
 
 from constants import TMPFL30_DAT
-from common import CommonFunctions
 from file_manager import FileManager
 
 # Class to safely and easily manage common tmpfl30.dat operations.
@@ -29,7 +28,7 @@ class TmpflFile:
             print(message)
         finally:
             if file:
-                file.close # Always executes, ensuring the stream is freed
+                file.close() # Always executes, ensuring the stream is freed
 
         # Discard the first element, which is the header.
         if (len(matrix) > 0):
@@ -52,6 +51,7 @@ class TmpflFile:
     # This function write drifter data into tmpfl30.dat,
     # while creating a timestamped backup copy beforehand.
     def wtmpfl30(self, tmpfl_file):
+        from common import CommonFunctions
         common = CommonFunctions()
         # Automatically create a timestamped backup copy of the existing DIR-File.
         backup_file = common.create_timestamped_backup(self.path)
@@ -79,4 +79,4 @@ class TmpflFile:
             print(message)
         finally:
             if file:
-                file.close # Always executes, ensuring the stream is freed
+                file.close() # Always executes, ensuring the stream is freed

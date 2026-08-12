@@ -156,44 +156,44 @@ def return_function(choice):
             print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")
 
 def create_menu1():
-    title = '\n' + f"{' ' * 9}{'Verify Record'}"  + '\n'
-    title = title + f"{' ' * 9}{'=========================='}"
-    if (not g_change_record):
-        last_option_description = "to continue"
-    else:
-        last_option_description = "no more changes"
+    text = "Verify Record"
+    title = '\n' + f"{' ' * 9}{text}"  + '\n'
+    title = title + f"{' ' * 9}{'=' * len(text)}"
+    last_option_description = "no more changes"
 
     global g_menu1
     g_menu1 = Menu(title, None, last_option_description, return_function)
     set_first_menu_dictionary()
+    if (not g_change_record):
+        g_menu1.set_with_selection(False)
     g_menu1.loop()
 
 def create_menu2():
-    title = '\n' + f"{' ' * 9}{'Verify Record'}"  + '\n'
-    title = title + f"{' ' * 9}{'=========================='}"
-    if (not g_change_record):
-        last_option_description = "to continue"
-    else:
-        last_option_description = "no more changes"
+    text = "Verify Record"
+    title = '\n' + f"{' ' * 9}{text}"  + '\n'
+    title = title + f"{' ' * 9}{'=' * len(text)}"
+    last_option_description = "no more changes"
 
     global g_menu2
     g_menu2 = Menu(title, None, last_option_description, return_function)
     set_second_menu_dictionary()
+    if (not g_change_record):
+        g_menu2.set_with_selection(False)
     g_menu2.loop()
 
 def create_menu3():
     # From 16th column to 21st column in DIR-File represents the instrument sensor status flags.
     # The 22nd column in DIR-File represents the drogue deactivation code.
-    title = '\n' + f"{' ' * 9}{'Verify Record'}"  + '\n'
-    title = title + f"{' ' * 9}{'=========================='}"
-    if (not g_change_record):
-        last_option_description = "to continue"
-    else:
-        last_option_description = "no more changes"
+    text = "Verify Record"
+    title = '\n' + f"{' ' * 9}{text}"  + '\n'
+    title = title + f"{' ' * 9}{'=' * len(text)}"
+    last_option_description = "no more changes"
 
     global g_menu3
     g_menu3 = Menu(title, None, last_option_description, return_function)
     set_third_menu_dictionary()
+    if (not g_change_record):
+        g_menu3.set_with_selection(False)
     g_menu3.loop()
 
 # This function displays buoy records (such as coordinates, 
