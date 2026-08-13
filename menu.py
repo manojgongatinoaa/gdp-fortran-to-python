@@ -95,7 +95,7 @@ class Menu:
 # Child class derived from Menu.
 # This class keep looping while the user select a
 # previous set choice.
-class Loop_Menu(Menu):
+class LoopMenu(Menu):
     def __init__(self, title, dictionary, last_option_description, choice, return_function = None):
         # Call parent constructor to initialize the properties
         super().__init__(title, dictionary, last_option_description, return_function) 
@@ -119,6 +119,33 @@ class Loop_Menu(Menu):
                     pass
                 else:
                     return self.loop()
+
+        except ValueError as e:
+            # Triggers if the user types letters, symbols, or floats instead of an integer
+            print('\n' + f"{' ' * 9}{'Invalid input! Please enter a whole number.'}")
+            return self.loop()
+
+# Child class derived from Menu.
+# This class exit after making the selection.
+class AutoExitMenu(Menu):
+    def __init__(self, title, dictionary, last_option_description, return_function = None):
+        # Call parent constructor to initialize the properties
+        super().__init__(title, dictionary, last_option_description, return_function) 
+        
+    # Overriding the parent's loop() method
+    def loop(self):
+        self.display()
+
+        try:
+            # The input() function always returns a string
+            choice = int(input('\n' + f"{' ' * 9}{'Enter your choice (0-'}{self.last_key}{'): '}"))
+            if (choice not in self.all_options):
+                print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")
+                return self.loop()
+            else :
+                if callable(self.return_function(choice)):
+                    self.return_function(choice)
+                pass
 
         except ValueError as e:
             # Triggers if the user types letters, symbols, or floats instead of an integer
