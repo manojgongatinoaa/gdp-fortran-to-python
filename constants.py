@@ -22,6 +22,7 @@ WMOGTS15_DAT        = DATA_DIR + "wmogts15.dat"
 WMOGTS15_OFF        = DATA_DIR + "wmogts15.off"
 IMEI_LUT_DAT        = NEW_DATA_DIR + "IMEI_LUT.dat"
 TMPFL30_DAT         = DATA_DIR + "tmpfl30.dat"
+DEPLOYED_LOG        = DATA_DIR + "deployed.log"
 
 # Directory file
 DIR_FILE            = DATA_DIR + "dirfl50.dat"

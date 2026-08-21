@@ -14,7 +14,7 @@ class DatabaseManager:
     #******************************
     #*** tpb_ab_coef15.dat file ***
     #******************************
-    def select_all_manufacturer(self):
+    def select_all_manufacturer(self) -> list[str]:
         # Extracting the 1st and 4th columns (indices 0 and 3)
         matrix = []
         try:
@@ -61,7 +61,7 @@ class DatabaseManager:
     #*** IMEI_LUT.dat file ***
     #*************************
 
-    def select_all_wmo(self):
+    def select_all_wmo(self) -> list[str]:
         matrix = []
         try:
             file = None
@@ -131,7 +131,7 @@ class DatabaseManager:
     #*** tmpfl30.dat file ***
     #************************
     
-    def select_all_tmpfl30(self):
+    def select_all_tmpfl30(self) -> list[str]:
         tmpfl_file = TmpflFile()
         fl_manager = FileManager()
         file_path = fl_manager._resolve_path(tmpfl_file.path)
@@ -244,3 +244,30 @@ class DatabaseManager:
             row_number = -1
 
         return row_number
+
+    #*************************
+    #*** deployed.log file ***
+    #*************************
+    
+    def select_all_deployed_log(self) -> list[str]:
+        from deployed_log import DeployedLog
+        deployed_log = DeployedLog()
+        fl_manager = FileManager()
+        file_path = fl_manager._resolve_path(deployed_log.path)
+
+        rows = []
+        try:
+            with open(file_path, 'r') as file:
+                rows = file.readlines()
+        except OSError as e:
+            # f"Error Code: {e.errno}")     = OS error number (e.g., 2 for missing file)
+            # f"Message: {e.strerror}")     = Human-readable OS error string
+            # f"Target File: {e.filename}") = Name of the file causing the issue
+            message = f"Error Code: {e.errno}, " + f"Message: {e.strerror}, " + f"Target File: {e.filename}"
+            print(message)
+        finally:
+            if file:
+                file.close() # Always executes, ensuring the stream is freed
+
+        return rows
+

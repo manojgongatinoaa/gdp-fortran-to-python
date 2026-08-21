@@ -20,7 +20,6 @@ FORMAT_STRING = f"{'<'}{COLUMNS}{'d'}"
 
 # Class to safely and easily manage common DIR-File operations.
 class DirectoryFile:
-
     def __init__(self):
         self.path = DIR_FILE
 
