@@ -6,15 +6,17 @@
 import struct
 
 from constants import DIR_FILE
+from constants import data_type_columns
 from common import CommonFunctions
 
 # Chunk size:
 # Because each row has 22 columns and each number is a 64-bits double (8 bytes), 
 # each line in the file is exactly 176 bytes long.
-CHUNK_SIZE = 22*8
+COLUMNS = data_type_columns["d_file"]
+CHUNK_SIZE = COLUMNS*8
 # Format string:
 # 22d = 22 doubles (176 bytes)
-FORMAT_STRING = '22d'
+FORMAT_STRING = f"{'<'}{COLUMNS}{'d'}"
 
 # Class to safely and easily manage common DIR-File operations.
 class DirectoryFile:

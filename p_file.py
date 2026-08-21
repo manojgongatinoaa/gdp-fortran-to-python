@@ -6,15 +6,17 @@
 import struct
 
 from constants import WCK_DIR
+from constants import data_type_columns
 from common import CommonFunctions
 
 # Chunk size:
-# Because each row has 4 columns and each number is a 32-bits double (4 bytes), 
+# Because each row has 4 columns and each number is a 32-bits float (4 bytes), 
 # each line in the file is exactly 16 bytes long.
-CHUNK_SIZE = 4*4
+COLUMNS = data_type_columns["p_file"]
+CHUNK_SIZE = COLUMNS*4
 # Format string:
 # 4f = 4 floats (16 bytes)
-FORMAT_STRING = '<4f'
+FORMAT_STRING = f"{'<'}{COLUMNS}{'f'}"
 
 # Class to safely and easily manage common P-File operations.
 class PFile:
