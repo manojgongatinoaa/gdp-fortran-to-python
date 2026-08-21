@@ -7,7 +7,7 @@
 from tmpfl_file import TmpflFile
 from file_manager import FileManager
 from common import CommonFunctions
-from menu import Loop_Menu
+from menu import LoopMenu
 from database_manager import DatabaseManager
 
 # This run the option 3 from crtmpfl.py
@@ -91,7 +91,7 @@ def edit_tmpfl():
         # I need this class to keep looping while I'm processing IDs
         # by selecting option 3.
         loop_choice = 3 # to keep processing IDs
-        my_menu = Loop_Menu(title, menu_dictionary, last_option_description, loop_choice, return_function)
+        my_menu = LoopMenu(title, menu_dictionary, last_option_description, loop_choice, return_function)
         my_menu.loop()
     else:
         print('\n')

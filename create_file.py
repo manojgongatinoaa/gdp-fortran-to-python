@@ -6,7 +6,7 @@ from database_manager import DatabaseManager
 from file_manager import FileManager
 from common import CommonFunctions
 
-def create_new_records_for_directory_file(input_file, directory_file):
+def create_new_records_for_directory_file(input_file):
 #    print(*input_file, sep ='\n')
     new_records = []
     
@@ -53,9 +53,9 @@ def create_new_records_for_directory_file(input_file, directory_file):
                         idx = db_manager.select_row_number_dirfl(buoy_id)
                         if (idx >= 0 ):
                             # Buoy ID was found in DIR-File
-                            print(f"{' ' * 4}{'Entry for '}{str(int(buoy_id))}{' already exists in DIR-File. Skip to the nex ID.'}")
+                            print(f"{' ' * 4}{'Entry for '}{str(int(buoy_id))}{' already exists in DIR-File. Skip to the next ID.'}")
                         else:
-                            wmo             = float(db_manager.select_by_wmo(str(int(buoy_id))))
+                            wmo             = float(db_manager.select_wmo(str(int(buoy_id))))
                             sensor_type     = common.fill_sensor_type_array(int(buoy_type))
                             zero            = float(0)
 
@@ -121,14 +121,14 @@ def add_new_record():
     print(f"{' ' * 9}{'Expected file format: id, buoy_type, project_number, start_time, start_latitude, start_longitude.'}")
 
     # Loads the directory file
-    db_manager = DatabaseManager
+    db_manager = DatabaseManager()
     directory_file = db_manager.select_all_dirfl()
 
     # Prints a message to the console showing how many rows were successfully loaded.
     print('\n')
     print(f"{'Number of DIR-File records: '}{len(directory_file)}" + '\n')
 
-    new_records = create_new_records_for_directory_file(input_file, directory_file)
+    new_records = create_new_records_for_directory_file(input_file)
 
     if (len(new_records) > 0):
         # Update the directory file

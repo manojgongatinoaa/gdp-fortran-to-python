@@ -11,10 +11,12 @@ from file_manager import FileManager
 # The primary objective is to ensure these functions can be easily
 # replaced once the database migration is complete.
 class DatabaseManager:
+    #******************************
+    #*** tpb_ab_coef15.dat file ***
+    #******************************
     def select_all_manufacturer(self):
         # Extracting the 1st and 4th columns (indices 0 and 3)
         matrix = []
-
         try:
             file = None
             # /phodnet/drifter/data/files/tpb_ab_coef15.dat includes
@@ -42,12 +44,10 @@ class DatabaseManager:
         if (len(matrix) > 0):
             matrix.pop(0)
         #print(*columns_data, sep="\n")
-
         return matrix
 
     def select_manufacturer(self, buoy_id):
         manufacturer = None
-
         matrix = self.select_all_manufacturer()
         for i in range(len(matrix)):
             # Checks if the target ID equals the stored ID.
@@ -55,13 +55,14 @@ class DatabaseManager:
                 # If a match is found extract the manufacturer
                 manufacturer = matrix[i][1]
                 break
-
         return manufacturer
 
-    
-    def select_wmo(self, buoy_id):
-        matrix = []
+    #*************************
+    #*** IMEI_LUT.dat file ***
+    #*************************
 
+    def select_all_wmo(self):
+        matrix = []
         try:
             file = None
             # IMEI_LUT.dat is a more comprehensive source, which compiles WMO's
@@ -84,21 +85,51 @@ class DatabaseManager:
         finally:
             if file:
                 file.close() # Always executes, ensuring the stream is freed
+        return matrix
 
+    def select_wmo(self, buoy_id):
+        matrix = self.select_all_wmo()
         wmo = 0
- 
         for i in range(len(matrix)):
             # Checks if the target ID equals the stored ID.
             if matrix[i][0] == buoy_id:
                 # If a match is found extract the WMO
                 wmo = matrix[i][1]
                 break
-
         return wmo
 
-    #********************
-    #*** tmpfl30 file ***
-    #********************
+    # This function, given an ID, returns the row number in the IMEI_LUT.dat file.
+    # Parameters:
+    #     buoy_id: An integer used to locate its position in the IMEI_LUT.dat file.
+    # Return:
+    #    row_number: Row index corresponding to the buoy ID in IMEI_LUT.dat.
+    def select_row_number_wmofl(self, buoy_id: int) -> int:
+        wmos = self.select_all_wmo()
+
+        row_number = 0
+
+        # Looks for the ID in the DIR-File.
+        for row in wmos:
+            # row example: 
+            # 300534064897810.0, 4401656.0, 2222.0, 48.0, 17201.041015625,
+            # 43.189998626708984, -28.010000228881836, 17261.75, 41.73809814453125, -27.218000411987305,
+            # 41.0, 44.0, -29.0, -27.0, 17201.041015625,
+            # 1.0, 2.0, 3.0, 0.0, 0.0, 0.0, 0.0
+
+            # The 2nd column in DIR-File represents the WMO number.
+            if (buoy_id == int(row[0])):
+                # Found
+                break
+            row_number += 1
+
+        if (row_number == len(wmos)):
+            row_number = -1
+
+        return row_number
+
+    #************************
+    #*** tmpfl30.dat file ***
+    #************************
     
     def select_all_tmpfl30(self):
         tmpfl_file = TmpflFile()
@@ -189,10 +220,8 @@ class DatabaseManager:
     # Parameters:
     #     buoy_id: An integer used to locate its position in the directory file.
     # Return:
-    #    prow_number: Row index corresponding to the buoy ID in DIR-File.
+    #    row_number: Row index corresponding to the buoy ID in DIR-File.
     def select_row_number_dirfl(self, buoy_id: int) -> int:
-        from directory_file import DirectoryFile
-        
         directory_file = self.select_all_dirfl()
 
         row_number = 0

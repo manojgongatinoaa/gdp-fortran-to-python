@@ -18,7 +18,7 @@ def main():
     print('\n')
     print("Number of DIR-File records: ", len(directory_file))
 
-    # The 1nd column in DIR-File represents the buoy ID.
+    # The 1st column in DIR-File represents the buoy ID.
     # The 2nd column in DIR-File represents the WMO number.
     # The 3rd column in DIR-File represents the experiment  number.
     # The 4th column in DIR-File represents the buoy type classification code.
@@ -48,22 +48,22 @@ def main():
             # keeping the remaining columns as floating-point decimals.
             # Columns 16 through 21 are skipped entirely.
             record = '{:>7}'.format(str(cnt))
-            record = record + '{:>16}'.format(str(int(row[0])))
-            record = record + '{:>8}'.format(str(int(row[1])))
-            record = record + '{:>6}'.format(str(int(row[2])))
-            record = record + '{:>3}'.format(str(int(row[3])))
-            record = record + '{:>9}'.format(str(f"{row[4]:.2f}"))
-            record = record + '{:>8}'.format(str(f"{row[5]:.2f}"))
-            record = record + '{:>8}'.format(str(f"{row[6]:.2f}"))
-            record = record + '{:>10}'.format(str(f"{row[7]:.2f}"))
-            record = record + '{:>8}'.format(str(f"{row[8]:.2f}"))
-            record = record + '{:>8}'.format(str(f"{row[9]:.2f}"))
-            record = record + '{:>5}'.format(str(int(row[10])))
-            record = record + '{:>5}'.format(str(int(row[11])))
-            record = record + '{:>5}'.format(str(int(row[12])))
-            record = record + '{:>5}'.format(str(int(row[13])))
-            record = record + '{:>10}'.format(str(f"{row[14]:.2f}"))
-            record = record + '{:>2}'.format(str(int(row[21])))
+            record += '{:>16}'.format(str(int(row[0])))
+            record += '{:>8}'.format(str(int(row[1])))
+            record += '{:>6}'.format(str(int(row[2])))
+            record += '{:>3}'.format(str(int(row[3])))
+            record += '{:>9}'.format(str(f"{row[4]:.2f}"))
+            record += '{:>8}'.format(str(f"{row[5]:.2f}"))
+            record += '{:>8}'.format(str(f"{row[6]:.2f}"))
+            record += '{:>10}'.format(str(f"{row[7]:.2f}"))
+            record += '{:>8}'.format(str(f"{row[8]:.2f}"))
+            record += '{:>8}'.format(str(f"{row[9]:.2f}"))
+            record += '{:>5}'.format(str(int(row[10])))
+            record += '{:>5}'.format(str(int(row[11])))
+            record += '{:>5}'.format(str(int(row[12])))
+            record += '{:>5}'.format(str(int(row[13])))
+            record += '{:>10}'.format(str(f"{row[14]:.2f}"))
+            record += '{:>2}'.format(str(int(row[21])))
 
             output_lines.append(record)
             

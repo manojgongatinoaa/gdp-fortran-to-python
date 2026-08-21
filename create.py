@@ -153,7 +153,7 @@ def create(jd_to_date):
         # 1.0, 2.0, 3.0, 0.0, 0.0, 0.0, 0.0
 
         # Start filling out the record.
-        # The 1nd column in DIR-File represents the buoy ID.
+        # The 1st column in DIR-File represents the buoy ID.
         g_new_row[0] = float(buoy_id)
 
         wmo = db_manager.select_wmo(buoy_id)

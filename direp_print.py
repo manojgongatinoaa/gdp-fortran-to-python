@@ -6,7 +6,7 @@ from common import CommonFunctions
 
 def create_record(row, jd_to_date):
     if len(row) > 21:
-        # The 1nd column in DIR-File represents the buoy ID.
+        # The 1st column in DIR-File represents the buoy ID.
         # The 2nd column in DIR-File represents the WMO number.
         # The 3rd column in DIR-File represents the experiment  number.
         # The 4th column in DIR-File represents the buoy type classification code.
@@ -72,20 +72,20 @@ def create_record(row, jd_to_date):
                 drogue_off_time = '0 0.0 0000'
         
         record = '{:>15}'.format(str(int(row[0])))
-        record = record + '{:>9}'.format(str(int(row[1])))
-        record = record + '{:>6}'.format(str(int(row[2])))
-        record = record + '{:>3}'.format(str(int(row[3])))
-        record = record + '{:>14}'.format(start_time)
-        record = record + '{:>8}'.format(str(f"{row[5]:.3f}"))
-        record = record + '{:>9}'.format(str(f"{row[6]:.3f}"))
-        record = record + '{:>14}'.format(end_time)
-        record = record + '{:>8}'.format(str(f"{row[8]:.3f}"))
-        record = record + '{:>9}'.format(str(f"{row[9]:.3f}"))
-        record = record + '{:>14}'.format(drogue_off_time)
-        record = record + '{:>2}'.format(str(int(row[15])))
-        record = record + '{:>2}'.format(str(int(row[16])))
-        record = record + '{:>2}'.format(str(int(row[17])))
-        record = record + '{:>2}'.format(str(int(row[18])))
+        record += '{:>9}'.format(str(int(row[1])))
+        record += '{:>6}'.format(str(int(row[2])))
+        record += '{:>3}'.format(str(int(row[3])))
+        record += '{:>14}'.format(start_time)
+        record += '{:>8}'.format(str(f"{row[5]:.3f}"))
+        record += '{:>9}'.format(str(f"{row[6]:.3f}"))
+        record += '{:>14}'.format(end_time)
+        record += '{:>8}'.format(str(f"{row[8]:.3f}"))
+        record += '{:>9}'.format(str(f"{row[9]:.3f}"))
+        record += '{:>14}'.format(drogue_off_time)
+        record += '{:>2}'.format(str(int(row[15])))
+        record += '{:>2}'.format(str(int(row[16])))
+        record +=.format(str(int(row[17])))
+        record += '{:>2}'.format(str(int(row[18])))
         record = record + '{:>2}'.format(str(int(row[19])))
         record = record + '{:>2}'.format(str(int(row[20])))
         record = record + '{:>2}'.format(str(int(row[21])))
@@ -95,40 +95,40 @@ def create_record(row, jd_to_date):
 def header_julian_date() -> str:
     # prints julian date
     header3 = f"{'b':>25}{'dep':>6}{'dep':>9}{'dep':>8}"
-    header3 = header3 + f"{'end':>5}{'end':>8}{'end':>7}"
-    header3 = header3 + f"{'drog':>8}{'sensors':>9}{'type':>7}" + '\n'
+    header3 += f"{'end':>5}{'end':>8}{'end':>7}"
+    header3 += f"{'drog':>8}{'sensors':>9}{'type':>7}" + '\n'
 
     header4 = f"{'id':>9}{'wmo':>6}{'exp':>6}"
-    header4 = header4 + f"{'ty':>4}{'time':>7}{'lat':>8}"
-    header4 = header4 + f"{'lon':>8}{'time':>6}{'lat':>7}"
-    header4 = header4 + f"{'lon':>7}{'lost':>8}{'death':>17}" + '\n\n'
+    header4 += f"{'ty':>4}{'time':>7}{'lat':>8}"
+    header4 += f"{'lon':>8}{'time':>6}{'lat':>7}"
+    header4 += f"{'lon':>7}{'lost':>8}{'death':>17}" + '\n\n'
     
     return header3 + header4
     
 def header_date() -> str:
     # prints m d y
     header3 = f"{'b':>25}{'dep. time':>12}{'dep':>9}"
-    header3 = header3 + f"{'dep':>7}{'end time':>13}{'end':>9}"
-    header3 = header3 + f"{'end':>7}{'drog lost':>14}{'sensors':>13}"
-    header3 = header3 + f"{'type':>7}" + '\n'
+    header3 += f"{'dep':>7}{'end time':>13}{'end':>9}"
+    header3 += f"{'end':>7}{'drog lost':>14}{'sensors':>13}"
+    header3 += f"{'type':>7}" + '\n'
 
     header4 = f"{'id':>9}{'wmo':>6}{'exp':>6}"
-    header4 = header4 + f"{'ty':>4}{'m':>4}{'d':>4}"
-    header4 = header4 + f"{'y':>4}{'lat':>9}{'lon':>7}"
-    header4 = header4 + f"{'m':>5}{'d':>4}{'y':>4}"
-    header4 = header4 + f"{'lat':>8}{'lon':>7}{'m':>7}"
-    header4 = header4 + f"{'d':>4}{'y':>4}{'death':>20}" + '\n'
+    header4 += f"{'ty':>4}{'m':>4}{'d':>4}"
+    header4 += f"{'y':>4}{'lat':>9}{'lon':>7}"
+    header4 += f"{'m':>5}{'d':>4}{'y':>4}"
+    header4 += f"{'lat':>8}{'lon':>7}{'m':>7}"
+    header4 += f"{'d':>4}{'y':>4}{'death':>20}" + '\n'
     
     return header3 + header4
 
 def create_header(exp_no, text, jd_to_date):
     header1 = '\n'
-    header1 = header1 + '{:>2}'.format('*** e x p e r i m e n t  ')
-    header1 = header1 + '{:>1}'.format(str(exp_no)) + '{:>1}'.format("  b u o y s ***")
-    header1 = header1 + '\n\n\n'
+    header1 += '{:>2}'.format('*** e x p e r i m e n t  ')
+    header1 += '{:>1}'.format(str(exp_no)) + '{:>1}'.format("  b u o y s ***")
+    header1 += '\n\n\n'
     
     header2 = f"{'{:>2}'.format('***** ')}{text}{'   b u o y s *****'}"
-    header2 = header2 + '\n\n'
+    header2 += '\n\n'
     
     header_3_4 = ""
     if not jd_to_date:

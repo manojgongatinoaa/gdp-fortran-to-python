@@ -33,7 +33,7 @@ def write_file(file_bstatX):
             # Check if the path exists (can be a file OR a directory)
             if path.exists():
                 answer = input(f"{' ' * 9}{'overwrite '}{file_path}{' ? '}")
-                if (answer.upper() == 'Y'):
+                if (answer.strip().upper() == 'Y'):
                     overwrite = True
                 else:
                     overwrite = False
@@ -95,18 +95,18 @@ def format_record_calendar_date(row):
 
     # Format the record to be written
     record = '{:>16}'.format(str(int(row[0])))
-    record = record + start_time
-    record = record + end_time
-    record = record + drogue_off_time
+    record += start_time
+    record += end_time
+    record += drogue_off_time
 
     return record
 
 def format_record_julian_date(row):
     # Format the record to be written
     record = '{:>18}'.format(str(int(row[0])))
-    record = record + '{:>7}'.format(str(int(row[4])))
-    record = record + '{:>7}'.format(str(int(row[7])))
-    record = record + '{:>7}'.format(str(int(row[14])))
+    record += '{:>7}'.format(str(int(row[4])))
+    record += '{:>7}'.format(str(int(row[7])))
+    record += '{:>7}'.format(str(int(row[14])))
 
     return record
 
@@ -115,7 +115,7 @@ def create_record(idx, row, jd_to_date):
     #                              date drogue buoy life  # days
     #    id  start date   end date   lost     (days)    drogue on     exp#
     if len(row) > 21:
-        # The 1nd column in DIR-File represents the buoy ID.
+        # The 1st column in DIR-File represents the buoy ID.
         # The 3rd column in DIR-File represents the experiment  number.
         # The 5th column in DIR-File represents the deployment timestamp.
         # The 8th column in DIR-File represents the timestamp of the last successful signal fix.
@@ -161,15 +161,15 @@ def create_record(idx, row, jd_to_date):
         # calendar dates (Month Day Year) or Julian days.
         if (jd_to_date):
             record = '{:>8}'.format(str(idx))
-            record = record + format_record_calendar_date(row)
-            record = record + '{:>11}'.format(str(days_in_trajectory) + ct)
-            record = record + '{:>10}'.format(str(days_with_drogue_on) + cd)
-            record = record + '{:>14}'.format(str(int(row[2])))
+            record += format_record_calendar_date(row)
+            record += '{:>11}'.format(str(days_in_trajectory) + ct)
+            record += '{:>10}'.format(str(days_with_drogue_on) + cd)
+            record += '{:>14}'.format(str(int(row[2])))
         else:
             record = format_record_julian_date(row)
-            record = record + '{:>9}'.format(str(days_in_trajectory) + ct)
-            record = record + '{:>10}'.format(str(days_with_drogue_on) + cd)
-            record = record + '{:>11}'.format(str(int(row[2])))
+            record += '{:>9}'.format(str(days_in_trajectory) + ct)
+            record += '{:>10}'.format(str(days_with_drogue_on) + cd)
+            record += '{:>11}'.format(str(int(row[2])))
     
     return record, days_in_trajectory, days_with_drogue_on # Returns a tuple
 
@@ -286,7 +286,7 @@ def return_function(choice):
                 # Before it leaves list_by_experiment_menu().
                 print('\n')
                 answer = input(f"{' ' * 9}{'Do you want to display the created files on the screen? (y/n)' }")
-                if (answer.upper() == 'Y'):
+                if (answer.strip().upper() == 'Y'):
                     Display_created_files()
 
             print("Exit!" + '\n')

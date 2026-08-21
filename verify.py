@@ -16,7 +16,7 @@ g_menu2 = None
 g_menu3 = None
 
 def set_first_menu_dictionary():
-    # The 1nd column in DIR-File represents the buoy ID.
+    # The 1st column in DIR-File represents the buoy ID.
     # The 2nd column in DIR-File represents the WMO number.
     # The 3rd column in DIR-File represents the experiment  number.
     # The 4th column in DIR-File represents the buoy type classification code.

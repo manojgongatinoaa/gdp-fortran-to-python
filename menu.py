@@ -126,7 +126,7 @@ class LoopMenu(Menu):
             return self.loop()
 
 # Child class derived from Menu.
-# This class exit after making the selection.
+# This class exit automatically after making the selection.
 class AutoExitMenu(Menu):
     def __init__(self, title, dictionary, last_option_description, return_function = None):
         # Call parent constructor to initialize the properties

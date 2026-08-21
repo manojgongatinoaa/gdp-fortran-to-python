@@ -4,7 +4,7 @@
 
 import shutil
 import math
-import datetime
+from datetime import date
 from datetime import datetime
 from datetime import timedelta
 
@@ -29,6 +29,13 @@ class CommonFunctions:
         except ValueError:
             return False
 
+    def is_valid_date(self, date_string, date_format="%Y-%m-%d"):
+        try:
+            datetime.strptime(date_string, date_format)
+            return True
+        except ValueError:
+            return False
+
     def value_exits_2D(self, target_value, column, matrix) -> bool:
         col_index = column  # Checking the X column (0-indexed)
 
@@ -38,7 +45,7 @@ class CommonFunctions:
     def validate_dirfl_record(self, record):
         result = None
 
-        buoy_id         = record[0]     # The 1nd column in DIR-File represents the buoy ID.
+        buoy_id         = record[0]     # The 1st column in DIR-File represents the buoy ID.
         wmo             = record[1]     # The 2nd column in DIR-File represents the WMO number.
         start_time      = record[4]     # The 5th column in DIR-File represents the deployment date.
         start_lat       = record[5]     # The 6th column in DIR-File represents the deployment latitude coordinate.
@@ -60,10 +67,6 @@ class CommonFunctions:
             result = "WMO number have to be 7 digits."
         elif (start_time == float(0)):
             result = "start_time is less than or equal to 0.0"
-        elif (start_lat == float(0)):
-            result = "start_lat is less than or equal to 0.0"
-        elif (start_lon == float(0)):
-            result = "start_lon is less than or equal to 0.0"
         elif (start_time > float(0) and start_time > now):
             result = " start_time is in the future."
         elif (end_time > float(0) and end_time > now):
@@ -81,6 +84,25 @@ class CommonFunctions:
             result = "start_time is after end_time in DIR-File."
                                 
         return result
+
+    # Find duplicate records in a large 2D array based on the column's index.
+    # Output: [[22, '300534060014780', ...], [29376, '300534060014780', ...], ...]
+    def find_duplicate_rows_by_col(self, matrix, column):
+        from collections import defaultdict
+        # Group row data and row numbers by the first column value
+        groups = defaultdict(list)
+        for idx, row in enumerate(matrix):
+            groups[row[column]].append((idx, row))
+        
+        # Extract groups that appear more than once
+        duplicated_rows = []
+        for key, items in groups.items():
+            if len(items) > 1:
+                for idx, row in items:
+                    # Add row number to the front of the row
+                    duplicated_rows.append([idx] + list(row))
+                
+        return duplicated_rows
     
     # This function compares two 2D float arrays
     # Pramater:
@@ -179,7 +201,7 @@ class CommonFunctions:
 
     def jd_to_date(self, jd):
         r = self.jd_to_date_base(jd)
-        return datetime.date(r[0], r[1], int(r[2]))
+        return date(r[0], r[1], int(r[2]))
 
     def date_to_jd(self, year, month, day):
         """
@@ -258,7 +280,7 @@ class CommonFunctions:
                 day_frac = day_float - day_int
                 
                 # Validate base year, month, and integer day
-                base_date = datetime(year, month, day_int)
+                base_date = date(year, month, day_int)
                 
                 # Add fractional part as a fraction of a day (24 hours)
                 total_time = base_date + timedelta(days = day_frac)
@@ -314,7 +336,7 @@ class CommonFunctions:
 
                 else:
                     print('\n')
-                    print(f"{'Error: Start time must be less than end time ('}{new_line}{')'}")
+                    print(f"{'Error: Start time must be less than end time ('}{new_row}{')'}")
 
 
     def create_timestamped_backup(self, path):

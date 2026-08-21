@@ -53,7 +53,7 @@ def write_file(file_for05X):
             # Check if the path exists (can be a file OR a directory)
             if path.exists():
                 answer = input(f"{' ' * 9}{'overwrite '}{file_path}{' ? '}")
-                if (answer.upper() == 'Y'):
+                if (answer.strip().upper() == 'Y'):
                     overwrite = True
                 else:
                     overwrite = False
@@ -117,7 +117,7 @@ def return_function(choice):
                 # Before it leaves list_by_experiment_menu().
                 print('\n')
                 answer = input(f"{' ' * 9}{'Do you want to display the created files on the screen? (y/n)' }")
-                if (answer.upper() == 'Y'):
+                if (answer.strip().upper() == 'Y'):
                     Display_created_files()
 
             print('\n')

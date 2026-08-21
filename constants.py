@@ -5,8 +5,12 @@
 # Programer: CG July 2026
 
 # Default data directory
-DATA_DIR            = "/phodnet/drifter/data/files/"
-NEW_DATA_DIR        = "/phodnet/drifter/data/files_new/IDcenter/"
+BASE_DATA_DIR       = "/phodnet/drifter/data/"
+DATA_DIR            = BASE_DATA_DIR + "files/"
+NEW_DATA_DIR        = BASE_DATA_DIR + "files_new/IDcenter/"
+RAW_DIR             = BASE_DATA_DIR + "raw/"
+#WCK_DIR             = BASE_DATA_DIR + "vck/"
+SS_DIR              = BASE_DATA_DIR + "ss/"
 #BACKUP_DIR          = DATA_DIR + "save/"
 
 # Database
@@ -19,8 +23,26 @@ IMEI_LUT_DAT        = NEW_DATA_DIR + "IMEI_LUT.dat"
 # Directory file
 #DIR_FILE            = DATA_DIR + "dirfl50.dat"
 
-# for testing purposes
+# *** for testing purposes ***
+MY_BASE_DATA_DIR = "/phodnet/drifter/gonzalez/programs/python/migration_for2py/data/"
 MY_DATA_DIR = "/phodnet/drifter/gonzalez/programs/python/migration_for2py/data/files/"
 DIR_FILE = MY_DATA_DIR + "dirfl50.dat"
 BACKUP_DIR = MY_DATA_DIR + "save"
 TMPFL30_DAT = MY_DATA_DIR + "tmpfl30.dat"
+WCK_DIR = MY_BASE_DATA_DIR + "vck/"
+#SS_DIR = MY_BASE_DATA_DIR + "ss/"
+# ******************************
+
+data_type_directory = {
+    1: RAW_DIR,
+    2: WCK_DIR,
+    3: WCK_DIR,
+    4: SS_DIR
+}
+
+data_type_prefix = {
+    1: "b",
+    2: "p",
+    3: "s",
+    4: "k"
+}
