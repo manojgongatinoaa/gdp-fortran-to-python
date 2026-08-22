@@ -27,7 +27,7 @@ def return_function(choice):
             print("Goodbye!" + '\n')
 
 def main_menu():
-    text = "M E N U (compromenu)"
+    text = "M E N U (comprocmenu)"
     title = '\n' + f"{' ' * 9}{text}"  + '\n'
     title = title + f"{' ' * 9}{'=' * len(text)}"
     menu_dictionary = {

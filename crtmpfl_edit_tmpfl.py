@@ -4,27 +4,22 @@
 
 # This run the option 3 from crtmpfl.py
 
-from tmpfl_file import TmpflFile
-from file_manager import FileManager
 from common import CommonFunctions
 from menu import LoopMenu
 from database_manager import DatabaseManager
 
-# This run the option 3 from crtmpfl.py
+START_TIME  = 2
+END_TIME    = 3
 
-tmpfl_file = TmpflFile()
 g_idx_row = 0 # Header row
 
 def edit_tmpfl_elemt(column, element):
     num = float(element)
     element = f"{num:.3f}"
 
-    fl_manager = FileManager()
-    file_path = fl_manager._resolve_path(tmpfl_file.path)
-
     row = g_idx_row + 1
-    common = CommonFunctions()
-    common.change_element_tmpfl(row, column, element)
+    db_manager = DatabaseManager()
+    db_manager.change_element_tmpfl(row, column, element)
 
 def edit_tmpfl_start_time():
     common = CommonFunctions()
@@ -32,7 +27,7 @@ def edit_tmpfl_start_time():
     start_time = input(f"{' ' * 9}{'Enter new beginning time: '}")
     if (common.is_float(start_time) == True):
         # tmpfl30.dat 3rd column represents the deployment date. 
-        column = 2
+        column = START_TIME
         edit_tmpfl_elemt(column, start_time)
     else:
         # Triggers if the user types letters, or symbols instead of a a number
@@ -44,7 +39,7 @@ def edit_tmpfl_last_time():
     end_time = input(f"{' ' * 9}{'Enter new last day buoy had good temperature: '}")
     if (common.is_float(end_time) == True):
         # tmpfl30.dat 4th column represents the deployment date. 
-        column = 3
+        column = END_TIME
         edit_tmpfl_elemt(column, end_time)
     else:
         # Triggers if the user types letters, or symbols instead of a a number
@@ -69,9 +64,6 @@ def edit_tmpfl():
     # tmpfl30.dat format: Drifter ID, Experiment number, Deployment start time, Last good temperature day (end time)
     print('\n')
     input_buoy_id = input(f"{' ' * 9}{'Enter buoy ID to work with: '}")
-
-    # Read existing tmpfl30.dat file
-    tmpfl30 = tmpfl_file.rtmpfl30()
 
     db_manager = DatabaseManager()
     global g_idx_row

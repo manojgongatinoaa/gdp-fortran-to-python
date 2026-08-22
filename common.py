@@ -289,56 +289,6 @@ class CommonFunctions:
             result = False
         return result
 
-    # To change an element in a specific column of a tmpfl30.dat file.
-    def change_element_tmpfl(self, idx_row, idx_column, new_value):
-        db_manager = DatabaseManager()
-        rows = db_manager.select_all_tmpfl30()
-    
-        if (len(rows) > idx_row + 1):
-            row = rows[idx_row] # an string
-            columns = row.split() # a list
-            if (len(columns) > 3):
-                # Creates old line to print a report.
-                old_row = '{:>16}'.format(columns[0])             # buoy ID
-                old_row = old_row + '{:>8}'.format(columns[1])    # esperiment number
-                old_row = old_row + '{:>12}'.format(columns[2])   # start time
-                old_row = old_row + '{:>12}'.format(columns[3])   # end time
-                old_row = old_row + '\n'
-            
-                # Modify the element at Row idx_row, Column idx_column
-                columns[idx_column] = new_value
-
-                # Validate:
-                #     start time must be less than end time if end time greater than 0.0
-                start_time = float(columns[2])
-                end_time = float(columns[3])
-
-                valid = False
-                if (end_time == 0.0):
-                    valid = True
-                elif (end_time > 0.0 and (start_time <= end_time)):
-                    valid = True
-                if (valid):
-                    # Creates new line.
-                    new_row = '{:>16}'.format(columns[0])             # buoy ID
-                    new_row = new_row + '{:>8}'.format(columns[1])    # esperiment number
-                    new_row = new_row + '{:>12}'.format(columns[2])   # start time
-                    new_row = new_row + '{:>12}'.format(columns[3])   # end time
-                    new_row = new_row + '\n'
-                    
-                    # Reconstruct the line to save it back to the tmpfl30.dat file.
-                    rows[idx_row] = new_row
-
-                    print('\n' + f"{' ' * 9}{'Old: '}{old_row}")
-                    print(f"{' ' * 9}{'New: '}{new_row}")
-
-                    db_manager.update_all_tmpfl30(rows)
-
-                else:
-                    print('\n')
-                    print(f"{'Error: Start time must be less than end time ('}{new_row}{')'}")
-
-
     def create_timestamped_backup(self, path):
         timestamped_backup_file = ''
         try:

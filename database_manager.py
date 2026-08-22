@@ -172,12 +172,61 @@ class DatabaseManager:
             if file:
                 file.close() # Always executes, ensuring the stream is freed
 
-    # This function, given an ID, returns the row number in the tmpfl30.dat filr.
+    # To change an element in a specific column of a tmpfl30.dat file.
+    def change_element_tmpfl(self, idx_row, idx_column, new_value):
+        db_manager = DatabaseManager()
+        rows = db_manager.select_all_tmpfl30()
+    
+        if (len(rows) > idx_row + 1):
+            row = rows[idx_row] # an string
+            columns = row.split() # a list
+            if (len(columns) > 3):
+                # Creates old line to print a report.
+                old_row = '{:>16}'.format(columns[0])             # buoy ID
+                old_row = old_row + '{:>8}'.format(columns[1])    # esperiment number
+                old_row = old_row + '{:>12}'.format(columns[2])   # start time
+                old_row = old_row + '{:>12}'.format(columns[3])   # end time
+                old_row = old_row + '\n'
+            
+                # Modify the element at Row idx_row, Column idx_column
+                columns[idx_column] = new_value
+
+                # Validate:
+                #     start time must be less than end time if end time greater than 0.0
+                start_time = float(columns[2])
+                end_time = float(columns[3])
+
+                valid = False
+                if (end_time == 0.0):
+                    valid = True
+                elif (end_time > 0.0 and (start_time <= end_time)):
+                    valid = True
+                if (valid):
+                    # Creates new line.
+                    new_row = '{:>16}'.format(columns[0])             # buoy ID
+                    new_row = new_row + '{:>8}'.format(columns[1])    # esperiment number
+                    new_row = new_row + '{:>12}'.format(columns[2])   # start time
+                    new_row = new_row + '{:>12}'.format(columns[3])   # end time
+                    new_row = new_row + '\n'
+                    
+                    # Reconstruct the line to save it back to the tmpfl30.dat file.
+                    rows[idx_row] = new_row
+
+                    print('\n' + f"{' ' * 9}{'Old: '}{old_row}")
+                    print(f"{' ' * 9}{'New: '}{new_row}")
+
+                    db_manager.update_all_tmpfl30(rows)
+
+                else:
+                    print('\n')
+                    print(f"{'Error: Start time must be less than end time ('}{new_row}{')'}")
+
+    # This function, given an ID, returns the row number in the tmpfl30.dat file.
     # Parameters:
-    #     buoy_id: An integer used to locate its position in the directory file.
+    #     buoy_id: A string used to locate its position in the tmpfl30.dat file.
     # Return:
     #    row_number: Row index position corresponding to the buoy ID in tmpfl30.dat file.
-    def select_row_number_tmpfl30(self, buoy_id: int) -> int:
+    def select_row_number_tmpfl30(self, buoy_id: str) -> int:
         # Read existing tmpfl30.dat file
         tmpfl_file = TmpflFile()
         tmpfl30 = tmpfl_file.rtmpfl30()
@@ -200,6 +249,30 @@ class DatabaseManager:
             row_number = -1
 
         return row_number
+
+    # This function, given an ID, returns the whole row in the tmpfl30.dat file.
+    # Parameters:
+    #     buoy_id: A string used to locate its position in the tmpfl30.dat file.
+    # Return:
+    #    row: Row corresponding to the buoy ID in tmpfl30.dat file.
+    def select_row_tmpfl30(self, buoy_id: str) -> str:
+        # Read existing tmpfl30.dat file
+        tmpfl_file = TmpflFile()
+        tmpfl30 = tmpfl_file.rtmpfl30()
+
+        line = None
+
+        # Looks for the ID in the tmpfl30.dat.
+        for row in tmpfl30:
+            # row example: 
+            # 300534068922080.   2222.   17214.625       0.000
+
+            # The 1st column in tmpfl30.dat represents the buoy ID. 
+            if (buoy_id in row):
+                line = row
+                break
+
+        return line
 
     #****************
     #*** DIR-File ***

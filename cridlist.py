@@ -5,10 +5,13 @@
 # Programer: CG July 2026
 
 from cridlist_according_drogue_status import according_drogue_status
+from cridlist_active_buoy import all_active_buoys
 from menu import Menu
 
 def return_function(choice):
-    if (abs(choice) == 5):
+    if (choice == 2):
+        all_active_buoys()
+    elif (abs(choice) == 5):
         according_drogue_status(choice)
     elif (choice < 0):
         print('\n' + f"{' ' * 9}{'Invalid choice! Please try again.'}")       
@@ -22,6 +25,7 @@ def cridlist_main_menu():
     title = '\n' + f"{' ' * 9}{text}"  + '\n'
     title = title + f"{' ' * 9}{'=' * len(text)}"
     menu_dictionary = {
+        "2. ": "All active buoys",
         "5. ": "All active buoys with drogue ON (-5 = with drogue OFF)" + '\n' + f"{' ' * 13}{'separated by manufacturer if needed'}"
     }
     last_option_description = "Exit"
